@@ -1,10 +1,15 @@
-﻿Installation:
+# Xrow Meta Data
+
+# ﻿Installation
 
 After this the extension has been installed. You should be able to generate the sitemap 
 using the runcronjobs.php script. See "xrowsitemap.ini" for more configuration options.
 
-    # php runcronjobs.php sitemap
-    Running cronjob part 'sitemap'
+### `php runcronjobs.php sitemap;`
+
+`php runcronjobs.php sitemap;`
+
+	Running cronjob part 'sitemap'
 	Running extension/xrowmetadata/cronjobs/sitemap.php at: 14.10.2011 12:31
 	Generating Regular Sitemaps...
 	
@@ -49,21 +54,19 @@ Register sitemap in robots.txt:
 Option 1.)
     Add this to the end of the "robots.txt" file
   
-    ----------------
-    Sitemap: http://www.example.com/sitemaps/index
-    ----------------
+`Sitemap: http://www.example.com/sitemaps/index`
+
 Option 2.)
     Add this to the end of the ".htaccess" file
-    ----------------
+
     RewriteRule ^robots\.txt$ - [C]
     RewriteRule .* http://%{HTTP_HOST}/sitemaps/robots [P]
     
     RewriteRule ^sitemap\.xml$ - [C]
     RewriteRule .* http://%{HTTP_HOST}/sitemaps/index [P]
-    ----------------
 
-Troubleshooting & support
-=========================
+# Troubleshooting & support
+
 Send email to service [at] xrow [dot] de
 
 
