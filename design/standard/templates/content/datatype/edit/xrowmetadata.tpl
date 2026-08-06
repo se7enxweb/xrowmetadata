@@ -97,9 +97,43 @@
             <input id="ezcoa-{if ne( $attribute_base, 'ContentObjectAttribute' )}{$attribute_base}-{/if}{$attribute.contentclassattribute_id}_{$attribute.contentclass_attribute_identifier}_keywords" class="box ezcc-{$attribute.object.content_class.identifier} ezcca-{$attribute.object.content_class.identifier}_{$attribute.contentclass_attribute_identifier}" type="url" name="{$attribute_base}_xrowmetadata_data_array_{$attribute.id}[canonical_url]" size="100" maxsize="1055" value="{$attribute.content.canonical_url|wash()}" />
         </div>
 
-        <div class="element">
-            <label>{'Open Graph image object ID'|i18n( 'design/standard/class/datatype' )}:</label>
-            <input class="box" type="number" min="0" name="{$attribute_base}_xrowmetadata_data_array_{$attribute.id}[og_image]" size="10" value="{$attribute.content.og_image|wash()}" />
+        {def $mt_og_object = false()}
+        {if and($attribute.data_int, $attribute.data_int|gt(0))}
+            {set $mt_og_object = fetch('content','object',hash('id',$attribute.data_int))}
+        {/if}
+        <div class="element" id="ezobjectrelation_browse_{$attribute.id}">
+            <label>{'Open Graph image'|i18n( 'design/standard/class/datatype' )}:</label>
+            <table class="list" cellspacing="0">
+            <thead>
+            <tr>
+                <th>{'Name'|i18n( 'design/standard/content/datatype' )}</th>
+                <th>{'Type'|i18n( 'design/standard/content/datatype' )}</th>
+                <th>{'Section'|i18n( 'design/standard/content/datatype' )}</th>
+                <th>{'Published'|i18n( 'design/standard/content/datatype' )}</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="bglight">
+            {if $mt_og_object}
+                <td>{$mt_og_object.name|wash()}</td>
+                <td>{$mt_og_object.class_name|wash()}</td>
+                <td>{fetch(section, object, hash(section_id, $mt_og_object.section_id)).name|wash}</td>
+                <td>{if $mt_og_object.status|ne(1)}{'No'|i18n( 'design/standard/content/datatype' )}{else}{'Yes'|i18n( 'design/standard/content/datatype' )}{/if}</td>
+            {else}
+                <td>--name--</td>
+                <td>--class-name--</td>
+                <td>--section-name--</td>
+                <td>--published--</td>
+            {/if}
+            </tr>
+            </tbody>
+            </table>
+            <input type="hidden" name="{$attribute_base}_data_object_relation_id_{$attribute.id}" value="{$attribute.data_int|wash()}" />
+            {if $mt_og_object}
+                <input class="button ezobject-relation-remove-button" type="submit" name="CustomActionButton[{$attribute.id}_remove_object]" value="{'Remove object'|i18n( 'design/standard/content/datatype' )}" />
+            {else}
+                <input class="button ezobject-relation-add-button" type="submit" name="CustomActionButton[{$attribute.id}_browse_object]" value="{'Add an existing object'|i18n( 'design/standard/content/datatype' )}" title="{'Browse to add an existing object in this relation'|i18n( 'design/standard/content/datatype' )}" />
+            {/if}
         </div>
         <div class="element">
             <label>{'Open Graph image width'|i18n( 'design/standard/class/datatype' )}:</label>

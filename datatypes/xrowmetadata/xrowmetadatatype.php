@@ -91,6 +91,17 @@ class xrowMetaDataType extends eZDataType
                 }
             }
             $data['keywords'] = $new;
+
+            $relationPostName = $base . '_data_object_relation_id_' . $contentObjectAttribute->attribute( 'id' );
+            if ( $http->hasPostVariable( $relationPostName ) )
+            {
+                $data['og_image'] = $http->postVariable( $relationPostName );
+            }
+            else
+            {
+                $data['og_image'] = (string) $contentObjectAttribute->attribute( 'data_int' );
+            }
+
             $meta = self::fillMetaData( $data );
             $contentObjectAttribute->setContent( $meta );
             return true;
@@ -136,6 +147,8 @@ class xrowMetaDataType extends eZDataType
         }
 
         $meta = $attribute->content();
+        $ogImage = ( $meta->og_image != '' && is_numeric( $meta->og_image ) ) ? (int) $meta->og_image : 0;
+        $attribute->setAttribute( 'data_int', $ogImage );
         $xmlString = self::saveXML( $meta );
         $attribute->setAttribute( 'data_text', $xmlString );
 
@@ -143,6 +156,106 @@ class xrowMetaDataType extends eZDataType
         $keyword = new eZKeyword();
         $keyword->setKeywordArray( $meta->keywords );
         $keyword->store( $attribute );
+    }
+
+    function updateObjectAttributeOgImage( $attribute, $ogImage )
+    {
+        $meta = self::fetchMetaData( $attribute );
+        $meta->og_image = $ogImage;
+        $attribute->setAttribute( 'data_int', $ogImage != '' && is_numeric( $ogImage ) ? (int) $ogImage : 0 );
+        $attribute->setAttribute( 'data_text', self::saveXML( $meta ) );
+        $attribute->store();
+    }
+
+    function customObjectAttributeHTTPAction( $http, $action, $contentObjectAttribute, $parameters )
+    {
+        switch ( $action )
+        {
+            case "set_object_relation" :
+            {
+                if ( $http->hasPostVariable( 'BrowseActionName' ) and
+                     $http->postVariable( 'BrowseActionName' ) == ( 'AddRelatedObject_' . $contentObjectAttribute->attribute( 'id' ) ) and
+                     $http->hasPostVariable( "SelectedObjectIDArray" ) )
+                {
+                    if ( !$http->hasPostVariable( 'BrowseCancelButton' ) )
+                    {
+                        $selectedObjectIDArray = $http->postVariable( "SelectedObjectIDArray" );
+                        $objectID = $selectedObjectIDArray[0];
+                        $this->updateObjectAttributeOgImage( $contentObjectAttribute, $objectID );
+                    }
+                }
+            } break;
+
+            case "browse_object" :
+            {
+                $module = $parameters['module'];
+                $redirectionURI = $parameters['current-redirection-uri'];
+                $browseParameters = array( 'action_name' => 'AddRelatedObject_' . $contentObjectAttribute->attribute( 'id' ),
+                                           'type' =>  'AddRelatedObjectToDataType',
+                                           'browse_custom_action' => array( 'name' => 'CustomActionButton[' . $contentObjectAttribute->attribute( 'id' ) . '_set_object_relation]',
+                                                                            'value' => $contentObjectAttribute->attribute( 'id' ) ),
+                                           'persistent_data' => array( 'HasObjectInput' => 0 ),
+                                           'from_page' => $redirectionURI );
+                eZContentBrowse::browse( $browseParameters, $module );
+            } break;
+
+            case "remove_object" :
+            {
+                $this->updateObjectAttributeOgImage( $contentObjectAttribute, '' );
+            } break;
+
+            default :
+            {
+                eZDebug::writeError( "Unknown custom HTTP action: " . $action, "xrowMetaDataType" );
+            } break;
+        }
+    }
+
+    function customClassAttributeHTTPAction( $http, $action, $classAttribute )
+    {
+        switch ( $action )
+        {
+            case "set_object_relation" :
+            {
+                if ( $http->hasPostVariable( 'BrowseActionName' ) and
+                     $http->postVariable( 'BrowseActionName' ) == ( 'AddRelatedObjectToClassAttr' . $classAttribute->attribute( 'id' ) ) and
+                     $http->hasPostVariable( "SelectedObjectIDArray" ) )
+                {
+                    if ( !$http->hasPostVariable( 'BrowseCancelButton' ) )
+                    {
+                        $selectedObjectIDArray = $http->postVariable( "SelectedObjectIDArray" );
+                        $objectID = (int) $selectedObjectIDArray[0];
+                        $classAttribute->setAttribute( 'data_int4', $objectID );
+                        $classAttribute->setAttribute( 'data_text5', serialize( array( 'og_image' => $objectID ) ) );
+                        $classAttribute->store();
+                    }
+                }
+            } break;
+
+            case "browse_object" :
+            {
+                $module = $classAttribute->currentModule();
+                $browseParameters = array( 'action_name' => 'AddRelatedObjectToClassAttr' . $classAttribute->attribute( 'id' ),
+                                           'type' =>  'AddRelatedObjectToDataType',
+                                           'browse_custom_action' => array( 'name' => 'CustomActionButton[' . $classAttribute->attribute( 'id' ) . '_set_object_relation]',
+                                                                            'value' => $classAttribute->attribute( 'id' ) ),
+                                           'persistent_data' => array( 'ContentClassHasInput' => false ),
+                                           'from_page' => $module->currentRedirectionURI() );
+                eZContentBrowse::browse( $browseParameters, $module );
+            } break;
+
+            case "remove_object" :
+            {
+                $classAttribute->setAttribute( 'data_int4', 0 );
+                $classAttribute->setAttribute( 'data_text5', serialize( array() ) );
+                $classAttribute->store();
+            } break;
+
+            default :
+            {
+                eZDebug::writeError( "Unknown custom HTTP action: " . $action, "xrowMetaDataType" );
+            } break;
+        }
     }
 
     /*!
@@ -222,7 +335,8 @@ class xrowMetaDataType extends eZDataType
         $id = $attribute->attribute( 'id' );
         $postName = 'xrowmetadata_og_image_' . $id;
         $default = array();
-        $dataInt = 0;
+        $dataInt = $attribute->attribute( 'data_int4' );
+        $dataInt = ( is_numeric( $dataInt ) && (int) $dataInt > 0 ) ? (int) $dataInt : 0;
         if ( $http->hasPostVariable( $postName ) )
         {
             $value = trim( $http->postVariable( $postName ) );
@@ -230,6 +344,10 @@ class xrowMetaDataType extends eZDataType
             {
                 $dataInt = (int) $value;
                 $default['og_image'] = $dataInt;
+            }
+            else
+            {
+                $dataInt = 0;
             }
         }
         $attribute->setAttribute( 'data_int4', $dataInt );
@@ -258,9 +376,17 @@ class xrowMetaDataType extends eZDataType
 
           $classAttribute = $attribute->contentClassAttribute();
           $classDefault = self::classAttributeDefault( $classAttribute );
-          if ( empty( $og_image ) && isset( $classDefault['og_image'] ) )
+          if ( empty( $og_image ) )
           {
-              $og_image = (string) $classDefault['og_image'];
+              $dataInt = $attribute->attribute( 'data_int' );
+              if ( !empty( $dataInt ) && is_numeric( $dataInt ) )
+              {
+                  $og_image = (string) $dataInt;
+              }
+              else if ( isset( $classDefault['og_image'] ) )
+              {
+                  $og_image = (string) $classDefault['og_image'];
+              }
           }
 
           $meta = new xrowMetaData( htmlspecialchars_decode( (string)$xml->title, ENT_QUOTES ),
