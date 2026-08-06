@@ -2,18 +2,16 @@
     <label>{'Default Open Graph image'|i18n( 'design/standard/class/datatype' )}:</label>
     {if is_object($attribute.content)}
         {def $mt_og_object = $attribute.content}
-        <input type="hidden" name="xrowmetadata_og_image_{$attribute.id}" value="{$attribute.content.id|wash()}" />
+        <input type="hidden" name="xrowmetadata_og_image_{$attribute.id}" value="{$mt_og_object.id|wash()}" />
         <table class="list" cellspacing="0">
             <tr>
                 <th>{'Name'|i18n( 'design/standard/content/datatype' )}</th>
                 <th>{'Type'|i18n( 'design/standard/content/datatype' )}</th>
-                <th>{'Section'|i18n( 'design/standard/content/datatype' )}</th>
                 <th>{'Action'|i18n( 'design/standard/content/datatype' )}</th>
             </tr>
             <tr>
                 <td>{$mt_og_object.name|wash()}</td>
                 <td>{$mt_og_object.class_name|wash()}</td>
-                <td>{fetch('content','section',hash('section_id',$mt_og_object.section_id)).name|wash()}</td>
                 <td>
                     <input class="button ezobject-relation-remove-button" type="submit" name="CustomActionButton[{$attribute.id}_remove_object]" value="{'Remove object'|i18n( 'design/standard/content/datatype' )}" />
                 </td>
