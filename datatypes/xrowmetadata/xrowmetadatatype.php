@@ -360,7 +360,33 @@ class xrowMetaDataType extends eZDataType
     function classAttributeDefault( $classAttribute )
     {
         $default = @unserialize( $classAttribute->attribute( 'data_text5' ) );
-        return is_array( $default ) ? $default : array();
+        if ( !is_array( $default ) )
+        {
+            $default = array();
+        }
+        if ( !isset( $default['og_image'] ) )
+        {
+            $dataInt = (int) $classAttribute->attribute( 'data_int4' );
+            if ( $dataInt > 0 )
+            {
+                $default['og_image'] = $dataInt;
+            }
+        }
+        return $default;
+    }
+
+    function classAttributeContent( $classAttribute )
+    {
+        $objectID = (int) $classAttribute->attribute( 'data_int4' );
+        if ( $objectID > 0 )
+        {
+            $object = eZContentObject::fetch( $objectID );
+            if ( $object instanceof eZContentObject )
+            {
+                return $object;
+            }
+        }
+        return false;
     }
 
     function fetchMetaData( $attribute )
