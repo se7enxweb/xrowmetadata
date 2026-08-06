@@ -101,6 +101,21 @@
         {if and($attribute.data_int, $attribute.data_int|gt(0))}
             {set $mt_og_object = fetch('content','object',hash('id',$attribute.data_int))}
         {/if}
+        {def $mt_image_attr = false()}
+        {def $mt_image_path = ''}
+        {if $mt_og_object}
+            {if $mt_og_object.data_map.site_opengraph_image}{set $mt_image_attr = $mt_og_object.data_map.site_opengraph_image}{/if}
+            {if and(not($mt_image_attr), $mt_og_object.data_map.image)}{set $mt_image_attr = $mt_og_object.data_map.image}{/if}
+            {if and(not($mt_image_attr), $mt_og_object.data_map.site_logo)}{set $mt_image_attr = $mt_og_object.data_map.site_logo}{/if}
+            {if and(not($mt_image_attr), $mt_og_object.data_map.file)}{set $mt_image_attr = $mt_og_object.data_map.file}{/if}
+            {if $mt_image_attr}
+                {if eq($mt_image_attr.data_type_string, 'ezimage')}
+                    {set $mt_image_path = $mt_image_attr.content.original.full_path}
+                {elseif eq($mt_image_attr.data_type_string, 'ezbinaryfile')}
+                    {set $mt_image_path = $mt_image_attr.content.filepath}
+                {/if}
+            {/if}
+        {/if}
         <div class="element" id="ezobjectrelation_browse_{$attribute.id}">
             <label>{'Open Graph image'|i18n( 'design/standard/class/datatype' )}:</label>
             <table class="list" cellspacing="0">
@@ -115,8 +130,13 @@
             <tbody>
             <tr class="bglight">
             {if $mt_og_object}
-                <td>{$mt_og_object.name|wash()}</td>
-                <td>{$mt_og_object.class_name|wash()}</td>
+                <td>
+                    {$mt_og_object.name|wash()}
+                    {if $mt_image_path|ne('')}
+                        <br /><img src="{concat('/', $mt_image_path)}" alt="{$mt_og_object.name|wash()}" style="max-width:200px; max-height:100px;" />
+                    {/if}
+                </td>
+                <td>{if $mt_image_attr}{$mt_image_attr.data_type_string|wash()}{else}{$mt_og_object.class_name|wash()}{/if}</td>
                 <td>{fetch(section, object, hash(section_id, $mt_og_object.section_id)).name|wash}</td>
                 <td>{if $mt_og_object.status|ne(1)}{'No'|i18n( 'design/standard/content/datatype' )}{else}{'Yes'|i18n( 'design/standard/content/datatype' )}{/if}</td>
             {else}
