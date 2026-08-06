@@ -128,6 +128,9 @@
             </tr>
             </tbody>
             </table>
+            {if not($mt_og_object)}
+                <p class="ezobject-relation-no-relation">{'There are no related object.'|i18n( 'design/standard/content/datatype' )}</p>
+            {/if}
             <input type="hidden" name="{$attribute_base}_data_object_relation_id_{$attribute.id}" value="{$attribute.data_int|wash()}" />
             {if $mt_og_object}
                 <input class="button ezobject-relation-remove-button" type="submit" name="CustomActionButton[{$attribute.id}_remove_object]" value="{'Remove object'|i18n( 'design/standard/content/datatype' )}" />
