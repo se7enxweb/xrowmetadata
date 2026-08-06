@@ -219,11 +219,32 @@ class xrowMetaDataType extends eZDataType
     */
     function fetchClassAttributeHTTPInput( $http, $base, $attribute )
     {
+        $id = $attribute->attribute( 'id' );
+        $postName = 'xrowmetadata_og_image_' . $id;
+        $default = array();
+        $dataInt = 0;
+        if ( $http->hasPostVariable( $postName ) )
+        {
+            $value = trim( $http->postVariable( $postName ) );
+            if ( $value !== '' && is_numeric( $value ) )
+            {
+                $dataInt = (int) $value;
+                $default['og_image'] = $dataInt;
+            }
+        }
+        $attribute->setAttribute( 'data_int4', $dataInt );
+        $attribute->setAttribute( 'data_text5', serialize( $default ) );
         return true;
     }
     /*
      * @return xrowMetaData
      */
+    function classAttributeDefault( $classAttribute )
+    {
+        $default = @unserialize( $classAttribute->attribute( 'data_text5' ) );
+        return is_array( $default ) ? $default : array();
+    }
+
     function fetchMetaData( $attribute )
     {
        try
@@ -233,13 +254,27 @@ class xrowMetaDataType extends eZDataType
           $keywords = htmlspecialchars_decode( (string) $xml->keywords, ENT_QUOTES );
           $keywords = !empty( $keywords ) ? explode( ",", $keywords ) : array();
 
+          $og_image = (string) $xml->og_image;
+
+          $classAttribute = $attribute->contentClassAttribute();
+          $classDefault = self::classAttributeDefault( $classAttribute );
+          if ( empty( $og_image ) && isset( $classDefault['og_image'] ) )
+          {
+              $og_image = (string) $classDefault['og_image'];
+          }
+
           $meta = new xrowMetaData( htmlspecialchars_decode( (string)$xml->title, ENT_QUOTES ),
                                     $keywords,
                                     htmlspecialchars_decode( (string)$xml->description, ENT_QUOTES ),
                                     htmlspecialchars_decode( (string)$xml->priority, ENT_QUOTES ),
                                     htmlspecialchars_decode( (string)$xml->change, ENT_QUOTES ),
                                     htmlspecialchars_decode( (string)$xml->sitemap_use , ENT_QUOTES ),
-                                    htmlspecialchars_decode( (string)$xml->canonical_url , ENT_QUOTES ) );
+                                    htmlspecialchars_decode( (string)$xml->canonical_url , ENT_QUOTES ),
+                                    $og_image,
+                                    (string) $xml->og_image_width,
+                                    (string) $xml->og_image_height,
+                                    htmlspecialchars_decode( (string) $xml->og_image_alt, ENT_QUOTES ),
+                                    (string) $xml->og_image_type );
           return $meta;
        }
        catch ( Exception $e )
@@ -252,7 +287,7 @@ class xrowMetaDataType extends eZDataType
      */
     function fillMetaData( $array )
     {
-        return new xrowMetaData( $array['title'], $array['keywords'], $array['description'], $array['priority'], $array['change'], $array['sitemap_use'], $array['canonical_url'] );
+        return new xrowMetaData( $array['title'], $array['keywords'], $array['description'], $array['priority'], $array['change'], $array['sitemap_use'], $array['canonical_url'], $array['og_image'], $array['og_image_width'], $array['og_image_height'], $array['og_image_alt'], $array['og_image_type'] );
     }
     /*!
      Returns the content.
@@ -353,6 +388,18 @@ class xrowMetaDataType extends eZDataType
         $xmldom->appendChild( $node );
         $node = $xml->createElement( "sitemap_use", htmlspecialchars( $meta->sitemap_use, ENT_QUOTES, 'UTF-8' ) );
         $xmldom->appendChild( $node );
+
+        $node = $xml->createElement( "og_image", htmlspecialchars( $meta->og_image, ENT_QUOTES, 'UTF-8' ) );
+        $xmldom->appendChild( $node );
+        $node = $xml->createElement( "og_image_width", htmlspecialchars( $meta->og_image_width, ENT_QUOTES, 'UTF-8' ) );
+        $xmldom->appendChild( $node );
+        $node = $xml->createElement( "og_image_height", htmlspecialchars( $meta->og_image_height, ENT_QUOTES, 'UTF-8' ) );
+        $xmldom->appendChild( $node );
+        $node = $xml->createElement( "og_image_alt", htmlspecialchars( $meta->og_image_alt, ENT_QUOTES, 'UTF-8' ) );
+        $xmldom->appendChild( $node );
+        $node = $xml->createElement( "og_image_type", htmlspecialchars( $meta->og_image_type, ENT_QUOTES, 'UTF-8' ) );
+        $xmldom->appendChild( $node );
+
         $xml->appendChild( $xmldom );
 
         return $xml->saveXML();

@@ -96,6 +96,27 @@
             <label>{'Canonical Link (starts with protocol https)'|i18n( 'design/standard/class/datatype' )}:</label>
             <input id="ezcoa-{if ne( $attribute_base, 'ContentObjectAttribute' )}{$attribute_base}-{/if}{$attribute.contentclassattribute_id}_{$attribute.contentclass_attribute_identifier}_keywords" class="box ezcc-{$attribute.object.content_class.identifier} ezcca-{$attribute.object.content_class.identifier}_{$attribute.contentclass_attribute_identifier}" type="url" name="{$attribute_base}_xrowmetadata_data_array_{$attribute.id}[canonical_url]" size="100" maxsize="1055" value="{$attribute.content.canonical_url|wash()}" />
         </div>
+
+        <div class="element">
+            <label>{'Open Graph image object ID'|i18n( 'design/standard/class/datatype' )}:</label>
+            <input class="box" type="number" min="0" name="{$attribute_base}_xrowmetadata_data_array_{$attribute.id}[og_image]" size="10" value="{$attribute.content.og_image|wash()}" />
+        </div>
+        <div class="element">
+            <label>{'Open Graph image width'|i18n( 'design/standard/class/datatype' )}:</label>
+            <input class="box" type="number" min="0" name="{$attribute_base}_xrowmetadata_data_array_{$attribute.id}[og_image_width]" size="10" value="{$attribute.content.og_image_width|wash()}" />
+        </div>
+        <div class="element">
+            <label>{'Open Graph image height'|i18n( 'design/standard/class/datatype' )}:</label>
+            <input class="box" type="number" min="0" name="{$attribute_base}_xrowmetadata_data_array_{$attribute.id}[og_image_height]" size="10" value="{$attribute.content.og_image_height|wash()}" />
+        </div>
+        <div class="element">
+            <label>{'Open Graph image alt'|i18n( 'design/standard/class/datatype' )}:</label>
+            <input class="box" type="text" name="{$attribute_base}_xrowmetadata_data_array_{$attribute.id}[og_image_alt]" size="100" value="{$attribute.content.og_image_alt|wash()}" />
+        </div>
+        <div class="element">
+            <label>{'Open Graph image type'|i18n( 'design/standard/class/datatype' )}:</label>
+            <input class="box" type="text" name="{$attribute_base}_xrowmetadata_data_array_{$attribute.id}[og_image_type]" size="100" value="{$attribute.content.og_image_type|wash()}" />
+        </div>
     </div>
 
 </div>
