@@ -1,50 +1,7 @@
 <?php
 
-$ini = eZINI::instance( 'site.ini' );
-$xrowsitemapINI = eZINI::instance( 'xrowsitemap.ini' );
 
-//getting custom set site access or default access
-if ( $xrowsitemapINI->hasVariable( 'SitemapSettings', 'AvailableSiteAccessList' ) )
-{
-    $siteAccessArray = $xrowsitemapINI->variable( 'SitemapSettings', 'AvailableSiteAccessList' );
-}
-else
-{
-    $siteAccessArray = array(
-        $ini->variable( 'SiteSettings', 'DefaultAccess' )
-    );
-}
-
-// adding the mobile sitemap site accesses
-if ( $xrowsitemapINI->hasVariable( 'MobileSitemapSettings', 'AvailableSiteAccessList' ) )
-{
-    $siteAccessArray = array_merge( $siteAccessArray, $xrowsitemapINI->variable( 'MobileSitemapSettings', 'AvailableSiteAccessList' ) );
-}
-
-$Module = $Params['Module'];
-$access = $GLOBALS['eZCurrentAccess']['name'];
-
-if ( is_array( $siteAccessArray ) && count( $siteAccessArray ) > 0 )
-{
-    if ( ! in_array( $access, $siteAccessArray ) )
-    {
-        return $Module->handleError( eZError::KERNEL_ACCESS_DENIED, 'kernel' );
-    }
-}
-
-$index = new xrowSitemapIndex();
-
-$dirArray = array(
-    eZSys::storageDirectory() . '/sitemap/' . xrowSitemapTools::domain() ,
-    eZSys::storageDirectory() . '/sitemap/' . xrowSitemapTools::domain() . '/' . xrowSitemapTools::FILETYP_ARCHIVE ,
-    eZSys::storageDirectory() . '/sitemap/' . xrowSitemapTools::domain() . '/' . xrowSitemapTools::FILETYP_STANDARD
-);
-
-foreach ( $dirArray as $item )
-{
-    addFiles( $index, $item, $dirArray );
-}
-
+if ( !function_exists( 'addFiles' ) ) {
 function addFiles( &$index, $dirname, $dirArray )
 {
     try
@@ -94,6 +51,53 @@ function addFiles( &$index, $dirname, $dirArray )
     }
 
 }
+}
+
+$ini = eZINI::instance( 'site.ini' );
+$xrowsitemapINI = eZINI::instance( 'xrowsitemap.ini' );
+
+//getting custom set site access or default access
+if ( $xrowsitemapINI->hasVariable( 'SitemapSettings', 'AvailableSiteAccessList' ) )
+{
+    $siteAccessArray = $xrowsitemapINI->variable( 'SitemapSettings', 'AvailableSiteAccessList' );
+}
+else
+{
+    $siteAccessArray = array(
+        $ini->variable( 'SiteSettings', 'DefaultAccess' )
+    );
+}
+
+// adding the mobile sitemap site accesses
+if ( $xrowsitemapINI->hasVariable( 'MobileSitemapSettings', 'AvailableSiteAccessList' ) )
+{
+    $siteAccessArray = array_merge( $siteAccessArray, $xrowsitemapINI->variable( 'MobileSitemapSettings', 'AvailableSiteAccessList' ) );
+}
+
+$Module = $Params['Module'];
+$access = $GLOBALS['eZCurrentAccess']['name'];
+
+if ( is_array( $siteAccessArray ) && count( $siteAccessArray ) > 0 )
+{
+    if ( ! in_array( $access, $siteAccessArray ) )
+    {
+        return $Module->handleError( eZError::KERNEL_ACCESS_DENIED, 'kernel' );
+    }
+}
+
+$index = new xrowSitemapIndex();
+
+$dirArray = array(
+    eZSys::storageDirectory() . '/sitemap/' . xrowSitemapTools::domain() ,
+    eZSys::storageDirectory() . '/sitemap/' . xrowSitemapTools::domain() . '/' . xrowSitemapTools::FILETYP_ARCHIVE ,
+    eZSys::storageDirectory() . '/sitemap/' . xrowSitemapTools::domain() . '/' . xrowSitemapTools::FILETYP_STANDARD
+);
+
+foreach ( $dirArray as $item )
+{
+    addFiles( $index, $item, $dirArray );
+}
+
 
 // Append foreign Sitemaps
 if ( $ini->hasVariable( 'Settings', 'AddSitemapIndex' ) )
