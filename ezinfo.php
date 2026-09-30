@@ -10,7 +10,7 @@ class xrowmetadataInfo
     static function info()
     {
         return array(
-            'Name' => "xrowmetadata",
+            'Name' => "Xrow Meta Data",
             'Version' => "1.4.1",
             'Copyright' => "Copyright (C) 1998 - 2026 7x and 1999 - 2022 xrow GmbH",
             'Author' => "xrow GmbH",
