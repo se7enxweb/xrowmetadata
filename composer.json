@@ -1,6 +1,6 @@
 {
     "name": "se7enxweb/xrowmetadata",
-    "description": "Add SEO Meta Data to content objects also provides sitemap capabilities to eZ Publish",
+    "description": "Add SEO Meta Data to content objects also provides sitemap capabilities to Exponential",
     "type": "ezpublish-legacy-extension",
     "license": "GPL-2.0-or-later",
     "authors": [
