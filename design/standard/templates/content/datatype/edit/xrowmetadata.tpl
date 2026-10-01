@@ -6,7 +6,7 @@
 {literal}
     <script type="text/javascript">
         jQuery(document).ready(function() {
-            jQuery('#more_checkbox').click(function() {
+            jQuery('#more_checkbox').on('click', function() {
                 jQuery('#options_div').toggle();
             });
             
