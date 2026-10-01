@@ -75,6 +75,26 @@
         <source>automatic</source>
         <translation>automatisch</translation>
     </message>
+    <message>
+        <source>Open Graph image</source>
+        <translation>Open-Graph-Bild</translation>
+    </message>
+    <message>
+        <source>Open Graph image width</source>
+        <translation>Breite des Open-Graph-Bildes</translation>
+    </message>
+    <message>
+        <source>Open Graph image height</source>
+        <translation>Höhe des Open-Graph-Bildes</translation>
+    </message>
+    <message>
+        <source>Open Graph image alt</source>
+        <translation>Alternativtext des Open-Graph-Bildes</translation>
+    </message>
+    <message>
+        <source>Open Graph image type</source>
+        <translation>Typ des Open-Graph-Bildes</translation>
+    </message>
 </context>
 <context>
     <name>design/standard/content/datatype</name>

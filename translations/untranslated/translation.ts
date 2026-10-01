@@ -55,6 +55,46 @@
         <source>Priority</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>More options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>no</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>yes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>automatic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Canonical Link (starts with protocol https)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Graph image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Graph image width</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Graph image height</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Graph image alt</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Graph image type</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>design/standard/content/datatype</name>
@@ -99,6 +139,10 @@
     <message>
         <location filename="xrowmetadatatype.php" line="60"/>
         <source>Title required.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>page</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
