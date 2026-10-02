@@ -401,7 +401,7 @@ class xrowSitemapTools
         $dir = new eZClusterDirectoryIterator( $dirname );
         foreach ( $dir as $file )
         {
-            echo "$file\n";
+            echo $file->name() . "\n";
             if ( $file->exists() )
             {
                 $file->delete();
@@ -844,6 +844,11 @@ class xrowSitemapTools
             }
         }
         $subtreeCount = eZContentObjectTreeNode::subTreeCountByNodeID( $params, $rootNode->NodeID );
+        if ( $subtreeCount == 0 )
+        {
+            eZDebug::writeDebug( "No news found for the news sitemap", __METHOD__ );
+            return;
+        }
 
         $max = min( $max, $subtreeCount );
         $max_all = $max;
