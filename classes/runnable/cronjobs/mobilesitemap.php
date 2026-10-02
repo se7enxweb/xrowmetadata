@@ -2,6 +2,7 @@
 /**
  * The code of extension/xrowmetadata/cronjobs/mobilesitemap.php, moved into a class (#207 stage 1). The file extension/xrowmetadata/cronjobs/mobilesitemap.php is one call to it.
  * Guide: doc/bc/6.0/cli_cronjob_view_abstractions.md
+ * @description Generate the mobile XML sitemaps of the configured siteaccesses
  */
 
 namespace Exponential\Cronjob\Extension\Xrowmetadata

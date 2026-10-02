@@ -2,6 +2,7 @@
 /**
  * The code of extension/xrowmetadata/cronjobs/sitemap.php, moved into a class (#207 stage 1). The file extension/xrowmetadata/cronjobs/sitemap.php is one call to it.
  * Guide: doc/bc/6.0/cli_cronjob_view_abstractions.md
+ * @description Generate the regular XML sitemaps of the configured siteaccesses and submit them
  */
 
 namespace Exponential\Cronjob\Extension\Xrowmetadata
