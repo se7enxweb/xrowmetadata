@@ -105,6 +105,31 @@ edit form ("Choose image", "Remove image"); it overrides the class default.
   `$meta.og_image_info` its URL and size, `$meta.og_image_source` `object` or
   `class`, `$meta.og_image_allowed` whether the class allows an own image.
 
+# Content licenses
+
+Since 1.4.9 a page can state the license of its content. The license is chosen
+from a catalogue of 1,332 licenses (the SPDX license list plus every Creative
+Commons license ever published, public domain tools and non-free terms):
+
+- per object in the metadata attribute's edit form ("License"), when the class
+  allows it ("Allow a per-object license"),
+- per class ("Default license" in the class edit),
+- per installation (`[LicenseSettings] DefaultLicense` in `xrowmetadata.ini`,
+  shipped as `GPL-2.0-or-later`).
+
+The page head prints `<link rel="license">`, `dcterms.license` and the
+schema.org `license` in JSON-LD (Open Graph has no license property), and every
+response for the page carries `Link: <url>; rel="license"` and
+`X-Content-License: <id>` (`[LicenseHeaderSettings]`, on by default). The
+template operator `xrowmetadata_license( node )` returns the resolved license,
+and `design:xrowmetadata/license_notice.tpl` prints a visible notice.
+
+    {include uri='design:xrowmetadata/license_head.tpl' node=$module_result.node_id}
+
+Everything else is in [doc/licenses.md](doc/licenses.md): levels and
+precedence, the catalogue and how to refresh it, settings, output formats, the
+HTTP header and caching, troubleshooting.
+
 # Troubleshooting & support
 
 Send email to service [at] xrow [dot] de
