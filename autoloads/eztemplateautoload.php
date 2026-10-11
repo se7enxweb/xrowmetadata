@@ -8,6 +8,13 @@ $eZTemplateOperatorArray[] = array(
         'metadata'
     )
 );
+$eZTemplateOperatorArray[] = array(
+    'script' => 'extension/xrowmetadata/autoloads/xrowmetadatalicenseoperator.php' ,
+    'class' => 'xrowMetaDataLicenseOperator' ,
+    'operator_names' => array(
+        'xrowmetadata_license'
+    )
+);
 // The license picker of the edit forms
 $eZTemplateOperatorArray[] = array(
     'script' => 'extension/xrowmetadata/autoloads/xrowmetadatalicensepickeroperator.php' ,
