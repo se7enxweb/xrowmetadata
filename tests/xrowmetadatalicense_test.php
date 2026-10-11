@@ -112,6 +112,9 @@ $savedServer = array(
 $savedURI = isset( $GLOBALS['eZURIRequestInstance'] ) ? $GLOBALS['eZURIRequestInstance'] : null;
 
 xrowMetaDataLicense::reset();
+// The catalogue of this checkout, also when the class was autoloaded from an installed copy
+$savedCatalogueFile = xrowMetaDataLicense::$catalogueFile;
+xrowMetaDataLicense::$catalogueFile = dirname( __DIR__ ) . '/share/licenses/licenses.json';
 $setSettings( array() );
 
 /* 1. The catalogue */
@@ -179,6 +182,27 @@ $e = $entry( 'LicenseRef-Custom' );
 $check( 'Custom terms: non_free custom, given per object', $e && $e['type'] === 'custom' && !empty( $e['per_object'] ) );
 $check( 'SSPL-1.0: not open source, non_free source_available', $has( 'SSPL-1.0', array( 'non_free' ), array( 'open_source' ) ) && $entry( 'SSPL-1.0' )['type'] === 'source_available' );
 $check( 'WTFPL: permissive, not public domain', $has( 'WTFPL', array( 'permissive' ), array( 'public_domain' ) ) );
+$e = $entry( 'QPL-1.0' );
+$check( 'QPL-1.0: weak copyleft, open source, free software, not permissive',
+        $has( 'QPL-1.0', array( 'copyleft', 'open_source', 'free_software' ), array( 'permissive', 'non_free' ) ) && $e['copyleft'] === 'weak'
+        && $e['terms']['share_alike'] === true && strpos( $e['note'], 'patches' ) !== false, $describe( 'QPL-1.0' ) );
+$e = $entry( 'QPL-1.0-INRIA-2004' );
+$check( 'QPL-1.0-INRIA-2004: weak copyleft like QPL-1.0, reviewed, but not OSI/FSF listed itself',
+        $e && $e['type'] === 'copyleft' && $e['copyleft'] === 'weak' && !isset( $e['reviewed'] ) && $e['groups'] === array( 'copyleft' )
+        && $e['osi'] === false && $e['fsf_libre'] === false && $e['terms'] === $entry( 'QPL-1.0' )['terms'], $describe( 'QPL-1.0-INRIA-2004' ) );
+$e = $entry( 'Informatica' );
+$check( 'Informatica: permissive without conditions, not OSI/FSF, not public domain',
+        $e && $e['type'] === 'permissive' && $e['groups'] === array( 'permissive' ) && !isset( $e['reviewed'] )
+        && $e['terms'] === array( 'commercial' => true, 'derivatives' => true, 'share_alike' => false, 'attribution' => false ), $describe( 'Informatica' ) );
+$unclassified = array();
+foreach ( $all as $e )
+{
+    if ( !$e['groups'] || isset( $e['reviewed'] ) || $e['type'] === 'other' )
+    {
+        $unclassified[] = $e['id'];
+    }
+}
+$check( 'no entry is unclassified (groups, type, reviewed)', !$unclassified, implode( ', ', $unclassified ) );
 $check( 'Unlicense, 0BSD, PDDL-1.0: public domain', $has( 'Unlicense', array( 'public_domain' ) ) && $has( '0BSD', array( 'public_domain', 'permissive' ) ) && $has( 'PDDL-1.0', array( 'public_domain', 'content' ) ) );
 $check( 'ODbL-1.0 and ODC-By-1.0: data content, not public domain', $has( 'ODbL-1.0', array( 'content', 'copyleft' ), array( 'public_domain' ) ) && $has( 'ODC-By-1.0', array( 'content' ), array( 'public_domain' ) ) );
 $check( 'US government works and expired copyright: public domain pseudo entries',
@@ -327,6 +351,7 @@ foreach ( $savedServer as $key => $value )
     if ( $value === null ) unset( $_SERVER[$key] ); else $_SERVER[$key] = $value;
 }
 if ( $savedURI === null ) unset( $GLOBALS['eZURIRequestInstance'] ); else $GLOBALS['eZURIRequestInstance'] = $savedURI;
+xrowMetaDataLicense::$catalogueFile = $savedCatalogueFile;
 xrowMetaDataLicense::reset();
 
 echo ( $xmlt['fail'] ? 'FAIL' : 'PASS' ) . ": {$xmlt['pass']} passed, {$xmlt['fail']} failed\n";

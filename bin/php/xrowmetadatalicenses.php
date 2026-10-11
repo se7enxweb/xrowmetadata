@@ -131,6 +131,14 @@ class xrowMetaDataLicenseCatalogueGenerator
         'Linux-man-pages-copyleft*' => 'weak', 'Vim' => 'weak', 'SugarCRM-1.1.3' => 'weak', 'Zimbra-*' => 'weak',
         'RSCPL' => 'weak', 'Frameworx-1.0' => 'weak', 'BSD-Protection' => 'weak', 'MMPL-1.0.1' => 'weak',
         'SUL-1.0' => 'network',
+        // QPL (checked 2026-10-11 against the SPDX texts): changes may only be
+        // distributed apart from the Software, as patches (3), changes in a binary
+        // stay under the QPL (4c), and an item that links with the Software must be
+        // distributed with its source and freely redistributable (6), under a license
+        // of its own choosing. That is a file-level copyleft with a source condition
+        // on linked items, so weak, although the FSF calls the QPL non-copyleft.
+        // The INRIA 2004 variant has the same terms; only the choice of law differs.
+        'QPL-1.0' => 'weak', 'QPL-1.0-INRIA-2004' => 'weak',
     );
 
     /**
@@ -178,7 +186,7 @@ class xrowMetaDataLicenseCatalogueGenerator
      * the same kind: use, copy, modify, distribute, keep the notice).
      * A pattern is a regular expression on the id.
      */
-    const PERMISSIVE_PATTERN = '/^(MIT|BSD|X11|HPND|ISC|OLDAP|Spencer|SGI-B|NIST-Software|Libpng|libpng|zlib|Zlib|TCL|Afmparse|Adobe|AMD|AML|Abstyles|ADSL|App-s2p|Aspell|atc-game|Bahyph|Barr|Beerware|bcrypt|Boehm|Borceux|Brian-Gladman|Buddy|Bugroff|bzip2|Caldera|Catharon|CFITSIO|check-cvs|checkmk|Clips|CMU-Mach|CNRI|Cornell|Cronyx|Crossword|CryptoSwift|CrystalStacker|Cube|DEC-3|diffmark|DOC$|Dotseqn|DSDP|dtoa|dvipdfm|eGenix|EPICS|Eurosym|FBM|Ferguson|FSFAP|FSFUL|Furuseth|fwlw|Game-Programming|generic-xts|Giftware|GL2PS|Glulxe|GLWTPL|Graphics-Gems|gtkbook|Gutmann|HaskellReport|HDF5|hdparm|HIDAPI|HP-19|HTMLTIDY|hyphen|IBM-pibs|IJG|ImageMagick|Info-ZIP|Inner-Net|Intel|ISO-permission|JasPer|jove|JPL-image|JPNIC|Kastrup|Kazlib|Knuth|Latex2e|Leptonica|libtiff|libutil|Linux-OpenIB|LOOP|lsof|LZMA|Mackerras|magaz|mailprio|MakeIndex|man2html|Martin-Birgmeier|McPhee|metamail|Minpack|MIPS|MITNFA|MMIXware|MPEG-SSG|mpi-permissive|mpich2|MTLL|Mup|NAIST|NetCDF|Newsletr|ngrep|NICTA|Noweb|NRL|NTP|OAR|OFFIS|OpenPBS|OpenSSL|OpenVision|OSSP|PADL|Pixar|pkgconf|Plexus|pnmstitch|psfrag|psutils|python-ldap|PSF-2.0|Qhull|radvd|Rdisc|RSA-MD|Ruby-pty|Saxpath|SchemeReport|SCEA|Sendmail|SGP4|SGMLUG|SHL-|SL$|snprintf|SNIA|SOFA|softSurfer|Soundex|ssh-keyscan|SSH-|SSLeay|Sun-PPP|SunPro|SWL|swrule|Symlinks|TCP-wrappers|TekHVC|TermReadKey|ThirdEye|threeparttable|TMate|TORQUE|TOSL|TPL-1.0|TrustedQSL|TTWL|TTYP0|TU-Berlin|UCAR|ulem|UMich|Unicode-DFS|UnixCrypt|URT-RLE|Vixie|VOSTROM|W3C|w3m|Widget|Wsuipa|WTFNMFPL|wwl|Xerox|Xfig|xkeyboard|xlock|xpp|XSkat|xzoom|YPL|Zed|Zeeff|ZPL|3D-Slicer|Advanced-Cryptics|ASWF|BitTorrent|BOLA|COIL|Community-Spec|D-FSL|DL-DE-BY|DRL|etalab|FDK-|Glide|GD$|GCR-docs|AdaCore-doc|LPD-document|Linux-man-pages-1-para|LPPL|NLOD|NLPL|OGC-1.0|OGDL|OGL-|OPL-UK|OPUBL|CDLA-Permissive|C-UDA|O-UDA|ODC-By|CDL-1.0|DocBook|Bitstream|Arphic|Baekmuk|Lucida|mplus|OML|ParaType|FreeBSD-DOC|TPDL|Kastrup|Soundex|any-OSI|Artistic-dist|SMPPL|Sun|Xdebug|xinetd|NBPL|MS-LPL|MVT|OGTSL|psutils|FreeImage|Imlib2|IJG|Linux-man-pages|APAFML|ESA-PL-permissive|MulanPSL|Net-SNMP|InnoSetup|SGI-OpenGL)/';
+    const PERMISSIVE_PATTERN = '/^(MIT|BSD|X11|HPND|ISC|OLDAP|Spencer|SGI-B|NIST-Software|Libpng|libpng|zlib|Zlib|TCL|Afmparse|Adobe|AMD|AML|Abstyles|ADSL|App-s2p|Aspell|atc-game|Bahyph|Barr|Beerware|bcrypt|Boehm|Borceux|Brian-Gladman|Buddy|Bugroff|bzip2|Caldera|Catharon|CFITSIO|check-cvs|checkmk|Clips|CMU-Mach|CNRI|Cornell|Cronyx|Crossword|CryptoSwift|CrystalStacker|Cube|DEC-3|diffmark|DOC$|Dotseqn|DSDP|dtoa|dvipdfm|eGenix|EPICS|Eurosym|FBM|Ferguson|FSFAP|FSFUL|Furuseth|fwlw|Game-Programming|generic-xts|Giftware|GL2PS|Glulxe|GLWTPL|Graphics-Gems|gtkbook|Gutmann|HaskellReport|HDF5|hdparm|HIDAPI|HP-19|HTMLTIDY|hyphen|IBM-pibs|IJG|ImageMagick|Info-ZIP|Inner-Net|Intel|ISO-permission|JasPer|jove|JPL-image|JPNIC|Kastrup|Kazlib|Knuth|Latex2e|Leptonica|libtiff|libutil|Linux-OpenIB|LOOP|lsof|LZMA|Mackerras|magaz|mailprio|MakeIndex|man2html|Martin-Birgmeier|McPhee|metamail|Minpack|MIPS|MITNFA|MMIXware|MPEG-SSG|mpi-permissive|mpich2|MTLL|Mup|NAIST|NetCDF|Newsletr|ngrep|NICTA|Noweb|NRL|NTP|OAR|OFFIS|OpenPBS|OpenSSL|OpenVision|OSSP|PADL|Pixar|pkgconf|Plexus|pnmstitch|psfrag|psutils|python-ldap|PSF-2.0|Qhull|radvd|Rdisc|RSA-MD|Ruby-pty|Saxpath|SchemeReport|SCEA|Sendmail|SGP4|SGMLUG|SHL-|SL$|snprintf|SNIA|SOFA|softSurfer|Soundex|ssh-keyscan|SSH-|SSLeay|Sun-PPP|SunPro|SWL|swrule|Symlinks|TCP-wrappers|TekHVC|TermReadKey|ThirdEye|threeparttable|TMate|TORQUE|TOSL|TPL-1.0|TrustedQSL|TTWL|TTYP0|TU-Berlin|UCAR|ulem|UMich|Unicode-DFS|UnixCrypt|URT-RLE|Vixie|VOSTROM|W3C|w3m|Widget|Wsuipa|WTFNMFPL|wwl|Xerox|Xfig|xkeyboard|xlock|xpp|XSkat|xzoom|YPL|Zed|Zeeff|ZPL|3D-Slicer|Advanced-Cryptics|ASWF|BitTorrent|BOLA|COIL|Community-Spec|D-FSL|DL-DE-BY|DRL|etalab|FDK-|Glide|GD$|GCR-docs|AdaCore-doc|LPD-document|Linux-man-pages-1-para|LPPL|NLOD|NLPL|OGC-1.0|OGDL|OGL-|OPL-UK|OPUBL|CDLA-Permissive|C-UDA|O-UDA|ODC-By|CDL-1.0|DocBook|Bitstream|Arphic|Baekmuk|Lucida|mplus|OML|ParaType|FreeBSD-DOC|TPDL|Kastrup|Soundex|any-OSI|Artistic-dist|SMPPL|Sun|Xdebug|xinetd|NBPL|MS-LPL|MVT|OGTSL|psutils|FreeImage|Imlib2|IJG|Linux-man-pages|APAFML|ESA-PL-permissive|MulanPSL|Net-SNMP|InnoSetup|SGI-OpenGL|Informatica$)/';
 
     /** The canonical page of the GNU licenses (gnu.org), by family and version. */
     const GNU_URL = array(
@@ -625,7 +633,7 @@ class xrowMetaDataLicenseCatalogueGenerator
             $groups[] = 'public_domain';
         }
 
-        $noAttribution = $publicDomain || in_array( $id, array( 'WTFPL', 'Unlicense', '0BSD', 'MIT-0', 'FSFAP', 'FSFAP-no-warranty-disclaimer', 'DL-DE-ZERO-2.0' ) );
+        $noAttribution = $publicDomain || in_array( $id, array( 'WTFPL', 'Unlicense', '0BSD', 'MIT-0', 'FSFAP', 'FSFAP-no-warranty-disclaimer', 'DL-DE-ZERO-2.0', 'Informatica' ) );
         $terms = $reviewed ? array(
             'commercial' => !in_array( $type, array( 'non_commercial' ) ),
             'derivatives' => $type !== 'no_derivatives',
@@ -665,6 +673,15 @@ class xrowMetaDataLicenseCatalogueGenerator
         if ( $id === 'WTFPL' )
         {
             $entry['note'] = 'A permissive license, not a public domain dedication.';
+        }
+        if ( $id === 'QPL-1.0' || $id === 'QPL-1.0-INRIA-2004' )
+        {
+            $entry['note'] = 'Changes may only be distributed separately, as patches, and stay under the QPL; software that links with it must be distributed with its source and be freely redistributable. Free but GPL-incompatible according to the FSF.'
+                . ( $id === 'QPL-1.0-INRIA-2004' ? ' The terms of QPL-1.0 under French law; OSI and FSF list only QPL-1.0, not this variant.' : '' );
+        }
+        if ( $id === 'Informatica' )
+        {
+            $entry['note'] = 'Use, modification and redistribution "without restriction"; no conditions besides the warranty disclaimer. Neither OSI nor FSF has reviewed it.';
         }
         if ( $id === '0BSD' || $id === 'Unlicense' )
         {

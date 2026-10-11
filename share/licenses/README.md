@@ -47,7 +47,7 @@ one license per line, so a diff shows the licenses that changed.
 | `name` | the SPDX name, else the English name (`name_local`: the CC title in the port's language) |
 | `url` | the license's own page: gnu.org for GNU licenses, creativecommons.org (deed) for CC, the steward's page (Apache, Mozilla, Eclipse, Open Data Commons, …), else opensource.org, else the SPDX page; `''` when there is none (all rights reserved, custom terms) |
 | `spdx` | the id is an SPDX id |
-| `groups` | any of `open_source`, `free_software`, `copyleft`, `permissive`, `content`, `public_domain`, `non_free`; empty for the 2 SPDX entries left unclassified (`reviewed: false`) |
+| `groups` | any of `open_source`, `free_software`, `copyleft`, `permissive`, `content`, `public_domain`, `non_free`; never empty: every entry is classified (an entry the rules could not place would have no groups and `reviewed: false`) |
 | `type` | the main kind: `copyleft`, `permissive`, `public_domain`, or for `non_free` `proprietary`, `non_commercial`, `no_derivatives`, `custom`, `source_available`; `other` when unclassified |
 | `copyleft` | `strong`, `weak`, `network` or `none` |
 | `osi`, `fsf_libre` | the SPDX flags (OSI approved; FSF free/libre) |
@@ -74,10 +74,14 @@ The rules are in `bin/php/xrowmetadatalicenses.php`, next to the lists they use.
     copyleft-next, Free Art (LAL), ODbL, CERN-OHL-S, TAPR-OHL, LiLiQ-R+, SimPL, Parity;
     and the Creative Commons ShareAlike licenses (BY-SA, SA 1.0).
   - *weak*: only the files or library and their changes: LGPL, MPL, EPL, CDDL, CPL, IPL, NPL,
-    SPL, SISSL, APSL 1.x, Ms-RL, Ms-PL, CeCILL-C, OFL, LiLiQ-R, CERN-OHL-W, CDLA-Sharing, and
+    SPL, SISSL, APSL 1.x, Ms-RL, Ms-PL, CeCILL-C, OFL, LiLiQ-R, CERN-OHL-W, CDLA-Sharing, QPL 1.0
+    and its INRIA 2004 variant (changes only as patches and under the QPL; linked software must
+    ship with its source; the FSF calls the QPL non-copyleft but free; only QPL-1.0 is OSI- and
+    FSF-listed, the variant differs only in its choice of law), and
     GPL with a linking exception (Classpath, GCC, font), eCos, wxWindows.
 - **permissive**: OSI- or FSF-approved without copyleft, and the many short notices of the
-  MIT, BSD, ISC, X11, HPND families and the like that SPDX lists without a flag.
+  MIT, BSD, ISC, X11, HPND families and the like that SPDX lists without a flag (among them
+  the Informatica License: use and redistribution "without restriction", no conditions).
 - **content**: every Creative Commons tool, GFDL, Open Data Commons (ODbL, ODC-By, PDDL),
   CDLA, government data licenses (OGL, DL-DE, Etalab, NLOD), font and documentation licenses.
 - **public_domain**: CC0, Public Domain Mark (`CC-PDM-1.0`, alias `LicenseRef-PDM-1.0`), CC
