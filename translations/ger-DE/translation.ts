@@ -80,6 +80,34 @@
         <translation>Open-Graph-Bild</translation>
     </message>
     <message>
+        <source>This image is shared as the page image (og:image, twitter:image) instead of the default of the class.</source>
+        <translation>Dieses Bild wird als Bild der Seite geteilt (og:image, twitter:image), statt des Standardbilds der Klasse.</translation>
+    </message>
+    <message>
+        <source>The chosen image is no longer available (deleted, in the trash or unpublished). The default of the class is shared instead.</source>
+        <translation>Das gewählte Bild ist nicht mehr verfügbar (gelöscht, im Papierkorb oder nicht veröffentlicht). Stattdessen wird das Standardbild der Klasse geteilt.</translation>
+    </message>
+    <message>
+        <source>No image chosen for this object.</source>
+        <translation>Für dieses Objekt ist kein Bild gewählt.</translation>
+    </message>
+    <message>
+        <source>The default of the class is shared: %name.</source>
+        <translation>Das Standardbild der Klasse wird geteilt: %name.</translation>
+    </message>
+    <message>
+        <source>Choose image</source>
+        <translation>Bild wählen</translation>
+    </message>
+    <message>
+        <source>Choose an image object as the Open Graph image of this object</source>
+        <translation>Ein Bildobjekt als Open-Graph-Bild dieses Objekts wählen</translation>
+    </message>
+    <message>
+        <source>Remove image</source>
+        <translation>Bild entfernen</translation>
+    </message>
+    <message>
         <source>Open Graph image width</source>
         <translation>Breite des Open-Graph-Bildes</translation>
     </message>

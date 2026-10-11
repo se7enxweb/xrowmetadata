@@ -92,17 +92,21 @@ class xrowMetaDataType extends eZDataType
             }
             $data['keywords'] = $new;
 
-            $relationPostName = $base . '_data_object_relation_id_' . $contentObjectAttribute->attribute( 'id' );
-            if ( $http->hasPostVariable( $relationPostName ) )
+            // The Open Graph image is chosen with "Choose image" and "Remove"
+            // (custom actions), never typed in: the form keeps what is stored
+            $current = self::fetchMetaData( $contentObjectAttribute );
+            $data['og_image'] = $current->storedOgImage();
+            foreach ( array( 'title', 'description', 'priority', 'change', 'sitemap_use', 'canonical_url', 'og_image_width', 'og_image_height', 'og_image_alt', 'og_image_type' ) as $key )
             {
-                $data['og_image'] = $http->postVariable( $relationPostName );
-            }
-            else
-            {
-                $data['og_image'] = (string) $contentObjectAttribute->attribute( 'data_int' );
+                if ( !isset( $data[$key] ) || !is_scalar( $data[$key] ) )
+                {
+                    $data[$key] = $key === 'sitemap_use' ? '0' : '';
+                }
             }
 
             $meta = self::fillMetaData( $data );
+            $meta->og_image_source = $current->og_image_source;
+            $meta->og_image = $current->og_image;
             $contentObjectAttribute->setContent( $meta );
             return true;
         }
@@ -147,24 +151,122 @@ class xrowMetaDataType extends eZDataType
         }
 
         $meta = $attribute->content();
-        $ogImage = ( $meta->og_image != '' && is_numeric( $meta->og_image ) ) ? (int) $meta->og_image : 0;
-        $attribute->setAttribute( 'data_int', $ogImage );
+        if ( !$meta instanceof xrowMetaData )
+        {
+            $meta = new xrowMetaData();
+        }
+        // Only the object's own image is stored, never the class default
+        $attribute->setAttribute( 'data_int', (int) $meta->storedOgImage() );
         $xmlString = self::saveXML( $meta );
         $attribute->setAttribute( 'data_text', $xmlString );
 
         // save keywords
         $keyword = new eZKeyword();
-        $keyword->setKeywordArray( $meta->keywords );
+        $keyword->setKeywordArray( is_array( $meta->keywords ) ? $meta->keywords : array() );
         $keyword->store( $attribute );
+
+        self::storeImageRelations( $attribute );
     }
 
+    /**
+     * Makes the attribute-level object relations of this attribute in this
+     * version match the Open Graph images of its translations: the image
+     * shows in the object's relations, and deleting the image tells this
+     * attribute (fixRelatedObjectItem()).
+     */
+    static function storeImageRelations( $attribute )
+    {
+        $object = $attribute->object();
+        if ( !$object instanceof eZContentObject )
+        {
+            return;
+        }
+        $version = (int) $attribute->attribute( 'version' );
+        $classAttributeID = (int) $attribute->attribute( 'contentclassattribute_id' );
+
+        $ids = array();
+        $own = (int) $attribute->attribute( 'data_int' );
+        if ( $own > 0 )
+        {
+            $ids[$own] = $own;
+        }
+        if ( $attribute->attribute( 'id' ) )
+        {
+            foreach ( $attribute->fetchAttributeTranslations() as $translation )
+            {
+                if ( $translation->attribute( 'language_code' ) === $attribute->attribute( 'language_code' ) )
+                {
+                    continue;
+                }
+                $id = (int) $translation->attribute( 'data_int' );
+                if ( $id > 0 )
+                {
+                    $ids[$id] = $id;
+                }
+            }
+        }
+
+        $object->removeContentObjectRelation( false, $version, $classAttributeID, eZContentObject::RELATION_ATTRIBUTE );
+        foreach ( $ids as $id )
+        {
+            if ( eZContentObject::fetch( $id ) instanceof eZContentObject )
+            {
+                $object->addContentObjectRelation( $id, $version, $classAttributeID, eZContentObject::RELATION_ATTRIBUTE );
+            }
+        }
+    }
+
+    /**
+     * Sets the object's own Open Graph image ('' removes it) and stores the
+     * attribute. The content is replaced too, so the input fetched before
+     * a custom action does not write the old image back.
+     */
     function updateObjectAttributeOgImage( $attribute, $ogImage )
     {
-        $meta = self::fetchMetaData( $attribute );
-        $meta->og_image = $ogImage;
-        $attribute->setAttribute( 'data_int', $ogImage != '' && is_numeric( $ogImage ) ? (int) $ogImage : 0 );
-        $attribute->setAttribute( 'data_text', self::saveXML( $meta ) );
+        $meta = $attribute->content();
+        if ( !$meta instanceof xrowMetaData )
+        {
+            $meta = self::fetchMetaData( $attribute );
+        }
+        $id = xrowMetaDataOpenGraphImage::objectID( $ogImage );
+        $meta->og_image_own = $id > 0 ? (string) $id : '';
+        $meta->og_image = $meta->og_image_own;
+        $meta->og_image_source = $id > 0 ? 'object' : '';
+        $attribute->setContent( $meta );
         $attribute->store();
+    }
+
+    /**
+     * The object $objectID was deleted ('remove') or moved to the trash
+     * ('trash'). A deleted image is taken out of the attribute; a trashed one
+     * stays stored, so restoring it brings it back, and is not shown meanwhile.
+     */
+    function fixRelatedObjectItem( $contentObjectAttribute, $objectID, $mode )
+    {
+        if ( $mode === 'remove' )
+        {
+            $this->removeRelatedObjectItem( $contentObjectAttribute, $objectID );
+        }
+    }
+
+    function removeRelatedObjectItem( $contentObjectAttribute, $objectID )
+    {
+        $meta = self::fetchMetaData( $contentObjectAttribute );
+        if ( (int) $meta->storedOgImage() !== (int) $objectID )
+        {
+            return false;
+        }
+        $meta->og_image_own = '';
+        $contentObjectAttribute->setAttribute( 'data_int', 0 );
+        $contentObjectAttribute->setAttribute( 'data_text', self::saveXML( $meta ) );
+        eZPersistentObject::storeObject( $contentObjectAttribute );
+        $object = $contentObjectAttribute->object();
+        if ( $object instanceof eZContentObject )
+        {
+            $object->removeContentObjectRelation( (int) $objectID, (int) $contentObjectAttribute->attribute( 'version' ),
+                                                  (int) $contentObjectAttribute->attribute( 'contentclassattribute_id' ), eZContentObject::RELATION_ATTRIBUTE );
+        }
+        return true;
     }
 
     function customObjectAttributeHTTPAction( $http, $action, $contentObjectAttribute, $parameters )
@@ -180,8 +282,16 @@ class xrowMetaDataType extends eZDataType
                     if ( !$http->hasPostVariable( 'BrowseCancelButton' ) )
                     {
                         $selectedObjectIDArray = $http->postVariable( "SelectedObjectIDArray" );
-                        $objectID = $selectedObjectIDArray[0];
-                        $this->updateObjectAttributeOgImage( $contentObjectAttribute, $objectID );
+                        $objectID = is_array( $selectedObjectIDArray ) ? reset( $selectedObjectIDArray ) : $selectedObjectIDArray;
+                        // The browse result is form input as well: only an
+                        // existing image the editor may read is accepted
+                        $object = eZContentObject::fetch( xrowMetaDataOpenGraphImage::objectID( $objectID ) );
+                        if ( !$object instanceof eZContentObject || !$object->canRead() || !xrowMetaDataOpenGraphImage::isImageClass( $object ) )
+                        {
+                            eZDebug::writeError( 'The selected object is no image the editor may read, the Open Graph image is left as it was', __METHOD__ );
+                            break;
+                        }
+                        $this->updateObjectAttributeOgImage( $contentObjectAttribute, (int) $object->attribute( 'id' ) );
                     }
                 }
             } break;
@@ -192,10 +302,21 @@ class xrowMetaDataType extends eZDataType
                 $redirectionURI = $parameters['current-redirection-uri'];
                 $browseParameters = array( 'action_name' => 'AddRelatedObject_' . $contentObjectAttribute->attribute( 'id' ),
                                            'type' =>  'AddRelatedObjectToDataType',
+                                           'selection' => 'single',
                                            'browse_custom_action' => array( 'name' => 'CustomActionButton[' . $contentObjectAttribute->attribute( 'id' ) . '_set_object_relation]',
                                                                             'value' => $contentObjectAttribute->attribute( 'id' ) ),
                                            'persistent_data' => array( 'HasObjectInput' => 0 ),
                                            'from_page' => $redirectionURI );
+                $imageClasses = xrowMetaDataOpenGraphImage::imageClasses();
+                if ( $imageClasses )
+                {
+                    $browseParameters['class_array'] = $imageClasses;
+                }
+                $startNode = trim( (string) xrowMetaDataOpenGraphImage::setting( 'BrowseStartNode', '' ) );
+                if ( $startNode !== '' )
+                {
+                    $browseParameters['start_node'] = $startNode;
+                }
                 eZContentBrowse::browse( $browseParameters, $module );
             } break;
 
@@ -357,7 +478,7 @@ class xrowMetaDataType extends eZDataType
     /*
      * @return xrowMetaData
      */
-    function classAttributeDefault( $classAttribute )
+    static function classAttributeDefault( $classAttribute )
     {
         $default = @unserialize( $classAttribute->attribute( 'data_text5' ) );
         if ( !is_array( $default ) )
@@ -389,7 +510,7 @@ class xrowMetaDataType extends eZDataType
         return false;
     }
 
-    function fetchMetaData( $attribute )
+    static function fetchMetaData( $attribute )
     {
        try
        {
@@ -398,22 +519,14 @@ class xrowMetaDataType extends eZDataType
           $keywords = htmlspecialchars_decode( (string) $xml->keywords, ENT_QUOTES );
           $keywords = !empty( $keywords ) ? explode( ",", $keywords ) : array();
 
-          $og_image = (string) $xml->og_image;
-
-          $classAttribute = $attribute->contentClassAttribute();
-          $classDefault = self::classAttributeDefault( $classAttribute );
-          if ( empty( $og_image ) )
+          // The object's own image: <og_image>, else data_int (older data
+          // has only one of them, the oldest neither)
+          $own = xrowMetaDataOpenGraphImage::objectID( (string) $xml->og_image );
+          if ( $own === 0 )
           {
-              $dataInt = $attribute->attribute( 'data_int' );
-              if ( !empty( $dataInt ) && is_numeric( $dataInt ) )
-              {
-                  $og_image = (string) $dataInt;
-              }
-              else if ( isset( $classDefault['og_image'] ) )
-              {
-                  $og_image = (string) $classDefault['og_image'];
-              }
+              $own = xrowMetaDataOpenGraphImage::objectID( (string) $attribute->attribute( 'data_int' ) );
           }
+          $og_image = $own > 0 ? (string) $own : '';
 
           $meta = new xrowMetaData( htmlspecialchars_decode( (string)$xml->title, ENT_QUOTES ),
                                     $keywords,
@@ -427,17 +540,47 @@ class xrowMetaDataType extends eZDataType
                                     (string) $xml->og_image_height,
                                     htmlspecialchars_decode( (string) $xml->og_image_alt, ENT_QUOTES ),
                                     (string) $xml->og_image_type );
-          return $meta;
        }
        catch ( Exception $e )
        {
-           return new xrowMetaData();
+           $meta = new xrowMetaData();
        }
+       self::resolveOgImage( $meta, $attribute );
+       return $meta;
+    }
+
+    /**
+     * Sets og_image of $meta to the image the page shows: the object's own
+     * image when it can be shown, else the class default when that can be
+     * shown, else ''. og_image_own keeps what is stored either way.
+     */
+    static function resolveOgImage( xrowMetaData $meta, $attribute )
+    {
+        $meta->og_image = '';
+        $meta->og_image_source = '';
+        $own = $meta->storedOgImage();
+        if ( $own !== '' && xrowMetaDataOpenGraphImage::usableObject( $own ) )
+        {
+            $meta->og_image = $own;
+            $meta->og_image_source = 'object';
+            return;
+        }
+        $classAttribute = $attribute->contentClassAttribute();
+        if ( !$classAttribute )
+        {
+            return;
+        }
+        $classDefault = self::classAttributeDefault( $classAttribute );
+        if ( isset( $classDefault['og_image'] ) && xrowMetaDataOpenGraphImage::usableObject( $classDefault['og_image'] ) )
+        {
+            $meta->og_image = (string) (int) $classDefault['og_image'];
+            $meta->og_image_source = 'class';
+        }
     }
     /*
      * @return xrowMetaData
      */
-    function fillMetaData( $array )
+    static function fillMetaData( $array )
     {
         return new xrowMetaData( $array['title'], $array['keywords'], $array['description'], $array['priority'], $array['change'], $array['sitemap_use'], $array['canonical_url'], $array['og_image'], $array['og_image_width'], $array['og_image_height'], $array['og_image_alt'], $array['og_image_type'] );
     }
@@ -515,7 +658,7 @@ class xrowMetaDataType extends eZDataType
         return true;
     }
 
-    function saveXML( $meta )
+    static function saveXML( $meta )
     {
         $xml = new DOMDocument( "1.0", "UTF-8" );
         $xmldom = $xml->createElement( "MetaData" );
@@ -541,7 +684,9 @@ class xrowMetaDataType extends eZDataType
         $node = $xml->createElement( "sitemap_use", htmlspecialchars( $meta->sitemap_use, ENT_QUOTES, 'UTF-8' ) );
         $xmldom->appendChild( $node );
 
-        $node = $xml->createElement( "og_image", htmlspecialchars( $meta->og_image, ENT_QUOTES, 'UTF-8' ) );
+        // Only the object's own image is saved, never the class default
+        $ogImage = ( $meta instanceof xrowMetaData ) ? $meta->storedOgImage() : (string) $meta->og_image;
+        $node = $xml->createElement( "og_image", htmlspecialchars( $ogImage, ENT_QUOTES, 'UTF-8' ) );
         $xmldom->appendChild( $node );
         $node = $xml->createElement( "og_image_width", htmlspecialchars( $meta->og_image_width, ENT_QUOTES, 'UTF-8' ) );
         $xmldom->appendChild( $node );

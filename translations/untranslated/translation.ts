@@ -80,6 +80,34 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>This image is shared as the page image (og:image, twitter:image) instead of the default of the class.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The chosen image is no longer available (deleted, in the trash or unpublished). The default of the class is shared instead.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No image chosen for this object.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The default of the class is shared: %name.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose an image object as the Open Graph image of this object</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Open Graph image width</source>
         <translation type="unfinished"></translation>
     </message>

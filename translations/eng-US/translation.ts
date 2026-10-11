@@ -47,6 +47,34 @@
         <translation>Open Graph image</translation>
     </message>
     <message>
+        <source>This image is shared as the page image (og:image, twitter:image) instead of the default of the class.</source>
+        <translation>This image is shared as the page image (og:image, twitter:image) instead of the default of the class.</translation>
+    </message>
+    <message>
+        <source>The chosen image is no longer available (deleted, in the trash or unpublished). The default of the class is shared instead.</source>
+        <translation>The chosen image is no longer available (deleted, in the trash or unpublished). The default of the class is shared instead.</translation>
+    </message>
+    <message>
+        <source>No image chosen for this object.</source>
+        <translation>No image chosen for this object.</translation>
+    </message>
+    <message>
+        <source>The default of the class is shared: %name.</source>
+        <translation>The default of the class is shared: %name.</translation>
+    </message>
+    <message>
+        <source>Choose image</source>
+        <translation>Choose image</translation>
+    </message>
+    <message>
+        <source>Choose an image object as the Open Graph image of this object</source>
+        <translation>Choose an image object as the Open Graph image of this object</translation>
+    </message>
+    <message>
+        <source>Remove image</source>
+        <translation>Remove image</translation>
+    </message>
+    <message>
         <source>Open Graph image width</source>
         <translation>Open Graph image width</translation>
     </message>

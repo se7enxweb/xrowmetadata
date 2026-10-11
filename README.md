@@ -65,6 +65,31 @@ Option 2.)
     RewriteRule ^sitemap\.xml$ - [C]
     RewriteRule .* http://%{HTTP_HOST}/sitemaps/index [P]
 
+# Open Graph image
+
+The class attribute can name a default image object (class edit, "Default Open
+Graph image"). Each object can choose its own image in the metadata attribute's
+edit form ("Choose image", "Remove image"); it overrides the class default.
+
+- The choice is stored in the attribute (`<og_image>` and `data_int`) and as an
+  attribute-level object relation, so it shows in the object's relations and
+  republishing the image clears the page's view cache (with `reverse_attribute`
+  in `[ViewCacheSettings] ClearRelationTypes`).
+- An image in the trash, unpublished or deleted is passed over and the class
+  default is shown. A deleted image is also taken out of the attribute.
+- `[OpenGraph]` in `xrowmetadata.ini`: the classes that may be chosen
+  (`ImageClasses[]`), where the browser starts, the image attributes searched
+  and the image alias (`opengraph`, at most 1200 x 1200, in `image.ini`).
+- In the page head:
+
+      {def $meta = metadata( $node.node_id )}
+      {include uri='design:xrowmetadata/opengraph_image.tpl' meta=$meta}
+
+  prints `og:image` (absolute URL of the alias, with width, height, type and
+  alt) and `twitter:image`. `$meta.og_image` is the id of the image shown,
+  `$meta.og_image_info` its URL and size, `$meta.og_image_source` `object` or
+  `class`.
+
 # Troubleshooting & support
 
 Send email to service [at] xrow [dot] de

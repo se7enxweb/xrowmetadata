@@ -39,6 +39,32 @@
     {$keywords}
 </div>
 {/if}
+{* Open Graph image: the object's own choice (an object relation), else the class default *}
+{def $og_own_id = $attribute.content.og_image_own|int()
+     $og_own_info = false()
+     $og_shown_info = $attribute.content.og_image_info}
+{if $og_own_id|gt(0)}{set $og_own_info = cond( and( $og_shown_info, eq( $attribute.content.og_image_source, 'object' ) ), $og_shown_info, false() )}{/if}
+<div class="block xrowmetadata-og-image" id="xrowmetadata_og_image_{$attribute.id}">
+    <label>{'Open Graph image'|i18n( 'design/standard/class/datatype' )}:</label>
+    {if $og_own_info}
+        <div class="xrowmetadata-og-image-chosen">
+            {if $og_own_info.thumbnail_url|ne('')}<img src="{$og_own_info.thumbnail_url|wash()}" alt="{$og_own_info.alt|wash()}" style="max-width:200px; max-height:120px; display:block; margin-bottom:0.5em;" />{/if}
+            <span class="xrowmetadata-og-image-name">{$og_own_info.name|wash()}</span>
+        </div>
+        <p class="xrowmetadata-og-image-note">{'This image is shared as the page image (og:image, twitter:image) instead of the default of the class.'|i18n( 'design/standard/class/datatype' )}</p>
+    {elseif $og_own_id|gt(0)}
+        <p class="xrowmetadata-og-image-missing">{'The chosen image is no longer available (deleted, in the trash or unpublished). The default of the class is shared instead.'|i18n( 'design/standard/class/datatype' )}</p>
+    {else}
+        <p class="xrowmetadata-og-image-none">{'No image chosen for this object.'|i18n( 'design/standard/class/datatype' )}
+        {if and( $og_shown_info, eq( $attribute.content.og_image_source, 'class' ) )}{'The default of the class is shared: %name.'|i18n( 'design/standard/class/datatype', '', hash( '%name', $og_shown_info.name|wash() ) )}{/if}</p>
+    {/if}
+    <input class="button xrowmetadata-og-image-choose" type="submit" name="CustomActionButton[{$attribute.id}_browse_object]" value="{'Choose image'|i18n( 'design/standard/class/datatype' )}" title="{'Choose an image object as the Open Graph image of this object'|i18n( 'design/standard/class/datatype' )}" />
+    {if $og_own_id|gt(0)}
+        <input class="button xrowmetadata-og-image-remove" type="submit" name="CustomActionButton[{$attribute.id}_remove_object]" value="{'Remove image'|i18n( 'design/standard/class/datatype' )}" />
+    {/if}
+</div>
+{undef $og_own_id $og_own_info $og_shown_info}
+
 
 <div class="block">
 
@@ -97,67 +123,6 @@
             <input id="ezcoa-{if ne( $attribute_base, 'ContentObjectAttribute' )}{$attribute_base}-{/if}{$attribute.contentclassattribute_id}_{$attribute.contentclass_attribute_identifier}_keywords" class="box ezcc-{$attribute.object.content_class.identifier} ezcca-{$attribute.object.content_class.identifier}_{$attribute.contentclass_attribute_identifier}" type="url" name="{$attribute_base}_xrowmetadata_data_array_{$attribute.id}[canonical_url]" size="100" maxsize="1055" value="{$attribute.content.canonical_url|wash()}" />
         </div>
 
-        {def $mt_og_object = false()}
-        {if and($attribute.data_int, $attribute.data_int|gt(0))}
-            {set $mt_og_object = fetch('content','object',hash('id',$attribute.data_int))}
-        {/if}
-        {def $mt_image_attr = false()}
-        {def $mt_image_path = ''}
-        {if $mt_og_object}
-            {if $mt_og_object.data_map.site_opengraph_image}{set $mt_image_attr = $mt_og_object.data_map.site_opengraph_image}{/if}
-            {if and(not($mt_image_attr), $mt_og_object.data_map.image)}{set $mt_image_attr = $mt_og_object.data_map.image}{/if}
-            {if and(not($mt_image_attr), $mt_og_object.data_map.site_logo)}{set $mt_image_attr = $mt_og_object.data_map.site_logo}{/if}
-            {if and(not($mt_image_attr), $mt_og_object.data_map.file)}{set $mt_image_attr = $mt_og_object.data_map.file}{/if}
-            {if $mt_image_attr}
-                {if eq($mt_image_attr.data_type_string, 'ezimage')}
-                    {set $mt_image_path = $mt_image_attr.content.original.full_path}
-                {elseif eq($mt_image_attr.data_type_string, 'ezbinaryfile')}
-                    {set $mt_image_path = $mt_image_attr.content.filepath}
-                {/if}
-            {/if}
-        {/if}
-        <div class="element" id="ezobjectrelation_browse_{$attribute.id}">
-            <label>{'Open Graph image'|i18n( 'design/standard/class/datatype' )}:</label>
-            <table class="list" cellspacing="0">
-            <thead>
-            <tr>
-                <th>{'Name'|i18n( 'design/standard/content/datatype' )}</th>
-                <th>{'Type'|i18n( 'design/standard/content/datatype' )}</th>
-                <th>{'Section'|i18n( 'design/standard/content/datatype' )}</th>
-                <th>{'Published'|i18n( 'design/standard/content/datatype' )}</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr class="bglight">
-            {if $mt_og_object}
-                <td>
-                    {$mt_og_object.name|wash()}
-                    {if $mt_image_path|ne('')}
-                        <br /><img src="{concat('/', $mt_image_path)}" alt="{$mt_og_object.name|wash()}" style="max-width:200px; max-height:100px;" />
-                    {/if}
-                </td>
-                <td>{if $mt_image_attr}{$mt_image_attr.data_type_string|wash()}{else}{$mt_og_object.class_name|wash()}{/if}</td>
-                <td>{fetch(section, object, hash(section_id, $mt_og_object.section_id)).name|wash}</td>
-                <td>{if $mt_og_object.status|ne(1)}{'No'|i18n( 'design/standard/content/datatype' )}{else}{'Yes'|i18n( 'design/standard/content/datatype' )}{/if}</td>
-            {else}
-                <td>--name--</td>
-                <td>--class-name--</td>
-                <td>--section-name--</td>
-                <td>--published--</td>
-            {/if}
-            </tr>
-            </tbody>
-            </table>
-            {if not($mt_og_object)}
-                <p class="ezobject-relation-no-relation">{'There are no related object.'|i18n( 'design/standard/content/datatype' )}</p>
-            {/if}
-            <input type="hidden" name="{$attribute_base}_data_object_relation_id_{$attribute.id}" value="{$attribute.data_int|wash()}" />
-            {if $mt_og_object}
-                <input class="button ezobject-relation-remove-button" type="submit" name="CustomActionButton[{$attribute.id}_remove_object]" value="{'Remove object'|i18n( 'design/standard/content/datatype' )}" />
-            {else}
-                <input class="button ezobject-relation-add-button" type="submit" name="CustomActionButton[{$attribute.id}_browse_object]" value="{'Add an existing object'|i18n( 'design/standard/content/datatype' )}" title="{'Browse to add an existing object in this relation'|i18n( 'design/standard/content/datatype' )}" />
-            {/if}
-        </div>
         <div class="element">
             <label>{'Open Graph image width'|i18n( 'design/standard/class/datatype' )}:</label>
             <input class="box" type="number" min="0" name="{$attribute_base}_xrowmetadata_data_array_{$attribute.id}[og_image_width]" size="10" value="{$attribute.content.og_image_width|wash()}" />
