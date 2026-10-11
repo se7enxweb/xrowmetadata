@@ -25,6 +25,12 @@ class xrowMetaData extends ezcBaseStruct
      */
     public $og_image_source = '';
     /**
+     * Whether the class lets an object choose its own Open Graph image
+     * ("Allow a per-object Open Graph image" of the class attribute). When
+     * false the class default is shown, and og_image_own is kept but unused.
+     */
+    public $og_image_allowed = true;
+    /**
      * Kept for stored data only. The size printed for og:image is the size
      * of the image alias (og_image_info), not these values; the edit form no
      * longer offers them.
@@ -92,7 +98,7 @@ class xrowMetaData extends ezcBaseStruct
     function attributes()
     {
         return array('title','description','keywords','sitemap_use','canonical_url','og_image','og_image_width','og_image_height','og_image_alt','og_image_type',
-                     'og_image_own','og_image_source','og_image_info','og_image_object');
+                     'og_image_own','og_image_source','og_image_allowed','og_image_info','og_image_object');
     }
 
     function attribute( $name )
@@ -143,6 +149,10 @@ class xrowMetaData extends ezcBaseStruct
         if ( isset( $array['og_image_source'] ) )
         {
             $meta->og_image_source = $array['og_image_source'];
+        }
+        if ( array_key_exists( 'og_image_allowed', $array ) )
+        {
+            $meta->og_image_allowed = (bool) $array['og_image_allowed'];
         }
         return $meta;
     }

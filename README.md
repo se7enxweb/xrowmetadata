@@ -77,6 +77,15 @@ edit form ("Choose image", "Remove image"); it overrides the class default.
   in `[ViewCacheSettings] ClearRelationTypes`).
 - An image in the trash, unpublished or deleted is passed over and the class
   default is shown. A deleted image is also taken out of the attribute.
+- "Allow a per-object Open Graph image" (class edit, on by default): when it
+  is cleared the class sets the image. The object edit form shows the class
+  default read-only ("Set by the class") without "Choose image" and "Remove
+  image", the page shows the class default only, and storing takes no own
+  image. An own image stored earlier stays in the attribute but is not used,
+  and its object relation is removed when the attribute is next stored;
+  checking the box again brings it back. The switch is kept in the class
+  attribute's `data_int3` (`1` = the class sets the image; `0` or empty, as
+  in every class saved before 1.4.8, = allowed).
 - Width and height: `og:image:width` and `og:image:height` are the size of
   the image alias, printed next to the image in the edit form. The form no
   longer has width and height inputs (an image is always an object, there is
@@ -94,7 +103,7 @@ edit form ("Choose image", "Remove image"); it overrides the class default.
   prints `og:image` (absolute URL of the alias, with width, height, type and
   alt) and `twitter:image`. `$meta.og_image` is the id of the image shown,
   `$meta.og_image_info` its URL and size, `$meta.og_image_source` `object` or
-  `class`.
+  `class`, `$meta.og_image_allowed` whether the class allows an own image.
 
 # Troubleshooting & support
 

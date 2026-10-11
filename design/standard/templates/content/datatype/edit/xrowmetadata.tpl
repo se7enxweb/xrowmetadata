@@ -40,13 +40,30 @@
 </div>
 {/if}
 {* Open Graph image: the object's own choice (an object relation), else the class default.
+   When the class sets the image (og_image_allowed false) the class default is shown read-only.
    The size printed is the size of the image alias that og:image uses. *}
-{def $og_own_id = $attribute.content.og_image_own|int()
+{def $og_allowed = $attribute.content.og_image_allowed
+     $og_own_id = $attribute.content.og_image_own|int()
      $og_own_info = false()
      $og_shown_info = $attribute.content.og_image_info}
-{if $og_own_id|gt(0)}{set $og_own_info = cond( and( $og_shown_info, eq( $attribute.content.og_image_source, 'object' ) ), $og_shown_info, false() )}{/if}
-<div class="block xrowmetadata-og-image" id="xrowmetadata_og_image_{$attribute.id}">
+{if and( $og_allowed, $og_own_id|gt(0) )}{set $og_own_info = cond( and( $og_shown_info, eq( $attribute.content.og_image_source, 'object' ) ), $og_shown_info, false() )}{/if}
+<div class="block xrowmetadata-og-image{if $og_allowed|not} xrowmetadata-og-image-by-class{/if}" id="xrowmetadata_og_image_{$attribute.id}">
     <label>{'Open Graph image'|i18n( 'design/standard/class/datatype' )}:</label>
+    {if $og_allowed|not}
+        {if $og_shown_info}
+        <div class="xrowmetadata-og-image-chosen xrowmetadata-og-image-class">
+            {if $og_shown_info.thumbnail_url|ne('')}<img src="{$og_shown_info.thumbnail_url|wash()}" alt="{$og_shown_info.alt|wash()}" style="max-width:200px; max-height:120px; display:block; margin-bottom:0.5em;" />{/if}
+            <span class="xrowmetadata-og-image-name">{$og_shown_info.name|wash()}</span>
+            {if and( $og_shown_info.width|ne(''), $og_shown_info.height|ne('') )}<span class="xrowmetadata-og-image-size">({$og_shown_info.width|wash()} x {$og_shown_info.height|wash()} px)</span>{/if}
+        </div>
+        {else}
+        <p class="xrowmetadata-og-image-none">{'The class sets no default image.'|i18n( 'design/standard/class/datatype' )}</p>
+        {/if}
+        <p class="xrowmetadata-og-image-note">{'Set by the class'|i18n( 'design/standard/class/datatype' )}</p>
+        {if $og_own_id|gt(0)}
+        <p class="xrowmetadata-og-image-unused">{'An image chosen earlier for this object is kept, but not shared while the class sets the image.'|i18n( 'design/standard/class/datatype' )}</p>
+        {/if}
+    {else}
     {if $og_own_info}
         <div class="xrowmetadata-og-image-chosen">
             {if $og_own_info.thumbnail_url|ne('')}<img src="{$og_own_info.thumbnail_url|wash()}" alt="{$og_own_info.alt|wash()}" style="max-width:200px; max-height:120px; display:block; margin-bottom:0.5em;" />{/if}
@@ -64,8 +81,9 @@
     {if $og_own_id|gt(0)}
         <input class="button xrowmetadata-og-image-remove" type="submit" name="CustomActionButton[{$attribute.id}_remove_object]" value="{'Remove image'|i18n( 'design/standard/class/datatype' )}" />
     {/if}
+    {/if}
 </div>
-{undef $og_own_id $og_own_info $og_shown_info}
+{undef $og_allowed $og_own_id $og_own_info $og_shown_info}
 
 
 <div class="block">

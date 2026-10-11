@@ -108,6 +108,38 @@
         <translation>Bild entfernen</translation>
     </message>
     <message>
+        <source>Set by the class</source>
+        <translation>Von der Klasse festgelegt</translation>
+    </message>
+    <message>
+        <source>The class sets no default image.</source>
+        <translation>Die Klasse legt kein Standardbild fest.</translation>
+    </message>
+    <message>
+        <source>An image chosen earlier for this object is kept, but not shared while the class sets the image.</source>
+        <translation>Ein früher für dieses Objekt gewähltes Bild bleibt gespeichert, wird aber nicht geteilt, solange die Klasse das Bild festlegt.</translation>
+    </message>
+    <message>
+        <source>Allow a per-object Open Graph image</source>
+        <translation>Eigenes Open-Graph-Bild je Objekt erlauben</translation>
+    </message>
+    <message>
+        <source>When cleared, every object shares the default image above, the object edit form shows it read-only, and an image an object chose earlier is kept but not used.</source>
+        <translation>Ohne Haken teilen alle Objekte das Standardbild oben, das Bearbeitungsformular des Objekts zeigt es nur an, und ein früher von einem Objekt gewähltes Bild bleibt gespeichert, wird aber nicht verwendet.</translation>
+    </message>
+    <message>
+        <source>Default Open Graph image</source>
+        <translation>Standard-Open-Graph-Bild</translation>
+    </message>
+    <message>
+        <source>Yes</source>
+        <translation>Ja</translation>
+    </message>
+    <message>
+        <source>No, set by the class</source>
+        <translation>Nein, von der Klasse festgelegt</translation>
+    </message>
+    <message>
         <source>Open Graph image width</source>
         <translation>Breite des Open-Graph-Bildes</translation>
     </message>

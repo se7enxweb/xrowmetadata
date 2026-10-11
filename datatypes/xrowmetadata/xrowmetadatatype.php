@@ -117,6 +117,7 @@ class xrowMetaDataType extends eZDataType
 
             $meta = self::fillMetaData( $data );
             $meta->og_image_source = $current->og_image_source;
+            $meta->og_image_allowed = $current->og_image_allowed;
             $meta->og_image = $current->og_image;
             $contentObjectAttribute->setContent( $meta );
             return true;
@@ -196,12 +197,16 @@ class xrowMetaDataType extends eZDataType
         $classAttributeID = (int) $attribute->attribute( 'contentclassattribute_id' );
 
         $ids = array();
+        // When the class sets the image, a stored own image is kept in the
+        // attribute but is no relation: it is not used
+        $classAttribute = $attribute->contentClassAttribute();
+        $allowed = $classAttribute ? self::allowsObjectOgImage( $classAttribute ) : true;
         $own = (int) $attribute->attribute( 'data_int' );
-        if ( $own > 0 )
+        if ( $allowed && $own > 0 )
         {
             $ids[$own] = $own;
         }
-        if ( $attribute->attribute( 'id' ) )
+        if ( $allowed && $attribute->attribute( 'id' ) )
         {
             foreach ( $attribute->fetchAttributeTranslations() as $translation )
             {
@@ -231,9 +236,17 @@ class xrowMetaDataType extends eZDataType
      * Sets the object's own Open Graph image ('' removes it) and stores the
      * attribute. The content is replaced too, so the input fetched before
      * a custom action does not write the old image back.
+     * When the class sets the image (the per-object image is not allowed)
+     * nothing changes and false is returned.
      */
     function updateObjectAttributeOgImage( $attribute, $ogImage )
     {
+        $classAttribute = $attribute->contentClassAttribute();
+        if ( $classAttribute && !self::allowsObjectOgImage( $classAttribute ) )
+        {
+            eZDebug::writeWarning( 'The class sets the Open Graph image of this attribute, an own image is not taken', __METHOD__ );
+            return false;
+        }
         $meta = $attribute->content();
         if ( !$meta instanceof xrowMetaData )
         {
@@ -245,6 +258,7 @@ class xrowMetaDataType extends eZDataType
         $meta->og_image_source = $id > 0 ? 'object' : '';
         $attribute->setContent( $meta );
         $attribute->store();
+        return true;
     }
 
     /**
@@ -309,6 +323,12 @@ class xrowMetaDataType extends eZDataType
 
             case "browse_object" :
             {
+                $classAttribute = $contentObjectAttribute->contentClassAttribute();
+                if ( $classAttribute && !self::allowsObjectOgImage( $classAttribute ) )
+                {
+                    eZDebug::writeWarning( 'The class sets the Open Graph image of this attribute, no image is chosen per object', __METHOD__ );
+                    break;
+                }
                 $module = $parameters['module'];
                 $redirectionURI = $parameters['current-redirection-uri'];
                 $browseParameters = array( 'action_name' => 'AddRelatedObject_' . $contentObjectAttribute->attribute( 'id' ),
@@ -357,8 +377,9 @@ class xrowMetaDataType extends eZDataType
                     {
                         $selectedObjectIDArray = $http->postVariable( "SelectedObjectIDArray" );
                         $objectID = (int) $selectedObjectIDArray[0];
-                        $classAttribute->setAttribute( 'data_int4', $objectID );
-                        $classAttribute->setAttribute( 'data_text5', serialize( array( 'og_image' => $objectID ) ) );
+                        $default = self::classAttributeDefault( $classAttribute );
+                        $default['og_image'] = $objectID;
+                        self::setClassAttributeDefault( $classAttribute, $default );
                         $classAttribute->store();
                     }
                 }
@@ -378,8 +399,9 @@ class xrowMetaDataType extends eZDataType
 
             case "remove_object" :
             {
-                $classAttribute->setAttribute( 'data_int4', 0 );
-                $classAttribute->setAttribute( 'data_text5', serialize( array() ) );
+                $default = self::classAttributeDefault( $classAttribute );
+                unset( $default['og_image'] );
+                self::setClassAttributeDefault( $classAttribute, $default );
                 $classAttribute->store();
             } break;
 
@@ -465,33 +487,49 @@ class xrowMetaDataType extends eZDataType
     function fetchClassAttributeHTTPInput( $http, $base, $attribute )
     {
         $id = $attribute->attribute( 'id' );
+        $default = self::classAttributeDefault( $attribute );
         $postName = 'xrowmetadata_og_image_' . $id;
-        $default = array();
-        $dataInt = $attribute->attribute( 'data_int4' );
-        $dataInt = ( is_numeric( $dataInt ) && (int) $dataInt > 0 ) ? (int) $dataInt : 0;
         if ( $http->hasPostVariable( $postName ) )
         {
-            $value = trim( $http->postVariable( $postName ) );
-            if ( $value !== '' && is_numeric( $value ) )
+            $value = xrowMetaDataOpenGraphImage::objectID( $http->postVariable( $postName ) );
+            if ( $value > 0 )
             {
-                $dataInt = (int) $value;
-                $default['og_image'] = $dataInt;
+                $default['og_image'] = $value;
             }
             else
             {
-                $dataInt = 0;
+                unset( $default['og_image'] );
             }
         }
-        $attribute->setAttribute( 'data_int4', $dataInt );
-        $attribute->setAttribute( 'data_text5', serialize( $default ) );
+        // The checkbox sends nothing when cleared: the hidden field says the
+        // form had it
+        if ( $http->hasPostVariable( 'xrowmetadata_object_og_image_shown_' . $id ) )
+        {
+            $attribute->setAttribute( self::CLASS_SETS_OG_IMAGE_FIELD, $http->hasPostVariable( 'xrowmetadata_object_og_image_' . $id ) ? 0 : 1 );
+        }
+        self::setClassAttributeDefault( $attribute, $default );
         return true;
     }
-    /*
-     * @return xrowMetaData
+
+    /**
+     * The class attribute field that says the class sets the Open Graph
+     * image: 1 means an object may not choose its own ("Allow a per-object
+     * Open Graph image" cleared). 0 or NULL, as in every class saved before
+     * 1.4.8, means it may. Templates read it as $class_attribute.data_int3.
+     */
+    const CLASS_SETS_OG_IMAGE_FIELD = 'data_int3';
+
+    /**
+     * The defaults of the class attribute (data_text5): 'og_image', the
+     * default image object id, also in data_int4 (older data has it there
+     * only).
+     *
+     * @return array
      */
     static function classAttributeDefault( $classAttribute )
     {
-        $default = @unserialize( $classAttribute->attribute( 'data_text5' ) );
+        $stored = (string) $classAttribute->attribute( 'data_text5' );
+        $default = $stored !== '' ? @unserialize( $stored, array( 'allowed_classes' => false ) ) : array();
         if ( !is_array( $default ) )
         {
             $default = array();
@@ -505,6 +543,34 @@ class xrowMetaDataType extends eZDataType
             }
         }
         return $default;
+    }
+
+    /**
+     * Writes $default to the class attribute: data_text5 and the default
+     * image in data_int4. Not stored.
+     */
+    static function setClassAttributeDefault( $classAttribute, array $default )
+    {
+        $image = isset( $default['og_image'] ) ? xrowMetaDataOpenGraphImage::objectID( $default['og_image'] ) : 0;
+        if ( $image > 0 )
+        {
+            $default['og_image'] = $image;
+        }
+        else
+        {
+            unset( $default['og_image'] );
+        }
+        $classAttribute->setAttribute( 'data_int4', $image );
+        $classAttribute->setAttribute( 'data_text5', serialize( $default ) );
+    }
+
+    /**
+     * Whether an object may choose its own Open Graph image ("Allow a
+     * per-object Open Graph image" of the class attribute, on by default).
+     */
+    static function allowsObjectOgImage( $classAttribute )
+    {
+        return (int) $classAttribute->attribute( self::CLASS_SETS_OG_IMAGE_FIELD ) !== 1;
     }
 
     function classAttributeContent( $classAttribute )
@@ -569,14 +635,16 @@ class xrowMetaDataType extends eZDataType
     {
         $meta->og_image = '';
         $meta->og_image_source = '';
+        $classAttribute = $attribute->contentClassAttribute();
+        // When the class sets the image, a stored own image is not used
+        $meta->og_image_allowed = $classAttribute ? self::allowsObjectOgImage( $classAttribute ) : true;
         $own = $meta->storedOgImage();
-        if ( $own !== '' && xrowMetaDataOpenGraphImage::usableObject( $own ) )
+        if ( $meta->og_image_allowed && $own !== '' && xrowMetaDataOpenGraphImage::usableObject( $own ) )
         {
             $meta->og_image = $own;
             $meta->og_image_source = 'object';
             return;
         }
-        $classAttribute = $attribute->contentClassAttribute();
         if ( !$classAttribute )
         {
             return;

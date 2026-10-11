@@ -108,6 +108,38 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Set by the class</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The class sets no default image.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>An image chosen earlier for this object is kept, but not shared while the class sets the image.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Allow a per-object Open Graph image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>When cleared, every object shares the default image above, the object edit form shows it read-only, and an image an object chose earlier is kept but not used.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Default Open Graph image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Yes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No, set by the class</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Open Graph image width</source>
         <translation type="unfinished"></translation>
     </message>

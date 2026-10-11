@@ -41,3 +41,9 @@
         <input class="button ezobject-relation-add-button" type="submit" name="CustomActionButton[{$class_attribute.id}_browse_object]" value="{'Add an existing object'|i18n( 'design/standard/content/datatype' )}" title="{'Browse to add an existing object'|i18n( 'design/standard/content/datatype' )}" />
     {/if}
 </div>
+
+<div class="block" id="xrowmetadata_object_og_image_{$class_attribute.id}">
+    <input type="hidden" name="xrowmetadata_object_og_image_shown_{$class_attribute.id}" value="1" />
+    <label><input type="checkbox" name="xrowmetadata_object_og_image_{$class_attribute.id}" value="1" {if $class_attribute.data_int3|ne(1)}checked="checked"{/if} /> {'Allow a per-object Open Graph image'|i18n( 'design/standard/class/datatype' )}</label>
+    <p>{'When cleared, every object shares the default image above, the object edit form shows it read-only, and an image an object chose earlier is kept but not used.'|i18n( 'design/standard/class/datatype' )}</p>
+</div>
