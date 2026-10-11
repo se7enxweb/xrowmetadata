@@ -69,6 +69,24 @@ class xrowMetaDataType extends eZDataType
                     $contentObjectAttribute->setValidationError( ezpI18n::tr( 'kernel/classes/datatypes', 'Canonical url must use https protocol.' ) );
                     return eZInputValidator::STATE_INVALID;
             }
+            // The license: only what the form sends is checked, and nothing
+            // when the class sets the license (the input is not taken then)
+            $licenseAllowed = $classAttribute ? self::allowsObjectLicense( $classAttribute ) : true;
+            if ( $licenseAllowed && is_array( $data ) && array_intersect_key( $data, array_flip( self::$licenseFields ) ) )
+            {
+                $current = self::fetchMetaData( $contentObjectAttribute );
+                $check = array();
+                foreach ( self::$licenseFields as $key )
+                {
+                    $check[$key] = isset( $data[$key] ) && is_scalar( $data[$key] ) ? $data[$key] : $current->$key;
+                }
+                $error = xrowMetaDataLicensePicker::validate( $check, $current->license );
+                if ( $error !== '' )
+                {
+                    $contentObjectAttribute->setValidationError( $error );
+                    return eZInputValidator::STATE_INVALID;
+                }
+            }
         }
         return eZInputValidator::STATE_ACCEPTED;
     }
@@ -115,10 +133,23 @@ class xrowMetaDataType extends eZDataType
                 }
             }
 
+            // The license fields: a field the form does not send keeps its
+            // stored value, and so does every field while the class sets
+            // the license ("Allow a per-object license" cleared)
+            foreach ( self::$licenseFields as $key )
+            {
+                if ( !$current->license_allowed || !isset( $data[$key] ) || !is_scalar( $data[$key] ) )
+                {
+                    $data[$key] = (string) $current->$key;
+                }
+            }
+
             $meta = self::fillMetaData( $data );
             $meta->og_image_source = $current->og_image_source;
             $meta->og_image_allowed = $current->og_image_allowed;
             $meta->og_image = $current->og_image;
+            $meta->license_allowed = $current->license_allowed;
+            $meta->license_class = $current->license_class;
             $contentObjectAttribute->setContent( $meta );
             return true;
         }
@@ -507,8 +538,64 @@ class xrowMetaDataType extends eZDataType
         {
             $attribute->setAttribute( self::CLASS_SETS_OG_IMAGE_FIELD, $http->hasPostVariable( 'xrowmetadata_object_og_image_' . $id ) ? 0 : 1 );
         }
+        // The default license of the class: an id of the catalogue, '' none
+        $postName = 'xrowmetadata_default_license_' . $id;
+        if ( $http->hasPostVariable( $postName ) )
+        {
+            $license = $http->postVariable( $postName );
+            $license = is_scalar( $license ) ? trim( (string) $license ) : '';
+            if ( $license === '' )
+            {
+                unset( $default['license'] );
+            }
+            elseif ( xrowMetaDataLicensePicker::info( $license ) )
+            {
+                $default['license'] = $license;
+            }
+            else
+            {
+                eZDebug::writeWarning( 'The license "' . $license . '" is not in the catalogue, the default license of the class is left as it was', __METHOD__ );
+            }
+        }
+        // "Allow a per-object license": the hidden field says the form had it
+        if ( $http->hasPostVariable( 'xrowmetadata_object_license_shown_' . $id ) )
+        {
+            $default['allow_object_license'] = $http->hasPostVariable( 'xrowmetadata_object_license_' . $id ) ? 1 : 0;
+        }
         self::setClassAttributeDefault( $attribute, $default );
         return true;
+    }
+
+    /**
+     * The license fields of the object, stored as elements of the same name.
+     */
+    static $licenseFields = array( 'license', 'license_holder', 'license_year', 'license_custom_url', 'license_custom_terms' );
+
+    /**
+     * The license settings of the class attribute, kept in the defaults
+     * array (data_text5) with the default Open Graph image:
+     * 'default_license' (catalogue id, '' for none) and
+     * 'allow_object_license' (true unless "Allow a per-object license" was
+     * cleared; every class saved before 1.4.9 allows it).
+     *
+     * @return array
+     */
+    static function classLicenseSettings( $classAttribute )
+    {
+        $default = self::classAttributeDefault( $classAttribute );
+        return array(
+            'default_license' => isset( $default['license'] ) && is_scalar( $default['license'] ) ? (string) $default['license'] : '',
+            'allow_object_license' => !isset( $default['allow_object_license'] ) || (int) $default['allow_object_license'] !== 0,
+        );
+    }
+
+    /**
+     * Whether an object may choose its own license.
+     */
+    static function allowsObjectLicense( $classAttribute )
+    {
+        $settings = self::classLicenseSettings( $classAttribute );
+        return $settings['allow_object_license'];
     }
 
     /**
@@ -617,13 +704,39 @@ class xrowMetaDataType extends eZDataType
                                     (string) $xml->og_image_height,
                                     htmlspecialchars_decode( (string) $xml->og_image_alt, ENT_QUOTES ),
                                     (string) $xml->og_image_type );
+          // The license (1.4.9): an element older data does not have is ''
+          $license = array();
+          foreach ( self::$licenseFields as $key )
+          {
+              $license[$key] = htmlspecialchars_decode( (string) $xml->$key, ENT_QUOTES );
+          }
+          $meta->setLicense( $license );
        }
        catch ( Exception $e )
        {
            $meta = new xrowMetaData();
        }
        self::resolveOgImage( $meta, $attribute );
+       self::resolveLicense( $meta, $attribute );
        return $meta;
+    }
+
+    /**
+     * Sets license_allowed and license_class of $meta from the class
+     * attribute. The stored license fields stay as they are.
+     */
+    static function resolveLicense( xrowMetaData $meta, $attribute )
+    {
+        $classAttribute = $attribute->contentClassAttribute();
+        if ( !$classAttribute )
+        {
+            $meta->license_allowed = true;
+            $meta->license_class = '';
+            return;
+        }
+        $settings = self::classLicenseSettings( $classAttribute );
+        $meta->license_allowed = $settings['allow_object_license'];
+        $meta->license_class = $settings['default_license'];
     }
 
     /**
@@ -661,7 +774,9 @@ class xrowMetaDataType extends eZDataType
      */
     static function fillMetaData( $array )
     {
-        return new xrowMetaData( $array['title'], $array['keywords'], $array['description'], $array['priority'], $array['change'], $array['sitemap_use'], $array['canonical_url'], $array['og_image'], $array['og_image_width'], $array['og_image_height'], $array['og_image_alt'], $array['og_image_type'] );
+        $meta = new xrowMetaData( $array['title'], $array['keywords'], $array['description'], $array['priority'], $array['change'], $array['sitemap_use'], $array['canonical_url'], $array['og_image'], $array['og_image_width'], $array['og_image_height'], $array['og_image_alt'], $array['og_image_type'] );
+        $meta->setLicense( $array );
+        return $meta;
     }
     /*!
      Returns the content.
@@ -775,6 +890,15 @@ class xrowMetaDataType extends eZDataType
         $xmldom->appendChild( $node );
         $node = $xml->createElement( "og_image_type", htmlspecialchars( $meta->og_image_type, ENT_QUOTES, 'UTF-8' ) );
         $xmldom->appendChild( $node );
+
+        // The license (1.4.9), escaped like the other fields: createElement()
+        // reads entity references in its value, so a bare & would be cut off
+        foreach ( self::$licenseFields as $key )
+        {
+            $value = isset( $meta->$key ) && is_scalar( $meta->$key ) ? (string) $meta->$key : '';
+            $node = $xml->createElement( $key, htmlspecialchars( $value, ENT_QUOTES, 'UTF-8' ) );
+            $xmldom->appendChild( $node );
+        }
 
         $xml->appendChild( $xmldom );
 

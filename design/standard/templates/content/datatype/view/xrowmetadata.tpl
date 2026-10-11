@@ -10,6 +10,11 @@
 <tr><th class="table_no_border">{'Change frequence'|i18n( 'design/standard/content/datatype' )}:</th><td class="table_no_border">{$attribute.content.change|wash()|i18n( 'design/standard/class/datatype' )}</td></tr>
 <tr><th class="table_no_border">{'Priority'|i18n( 'design/standard/content/datatype' )}:</th><td class="table_no_border">{$attribute.content.priority|wash()}</td></tr>
 <tr><th class="table_no_border">{'Open Graph image'|i18n( 'design/standard/content/datatype' )}:</th><td class="table_no_border">{$attribute.content.og_image|wash()}</td></tr>
+{if and( is_set( $attribute.content.license_effective ), xrowmetadata_license_enabled() )}
+{def $mv_license = $attribute.content.license_effective}
+<tr><th class="table_no_border">{'License'|i18n( 'design/standard/content/datatype' )}:</th><td class="table_no_border">{if $mv_license}{$mv_license.name|wash()} ({$mv_license.id|wash()}){if eq( $mv_license.source, 'class' )} - {'set by the class'|i18n( 'design/standard/content/datatype' )}{elseif eq( $mv_license.source, 'installation' )} - {'installation default'|i18n( 'design/standard/content/datatype' )}{/if}{if or( $attribute.content.license_holder|ne(''), $attribute.content.license_year|ne('') )}<br />&copy; {$attribute.content.license_year|wash()} {$attribute.content.license_holder|wash()}{/if}{else}{'None'|i18n( 'design/standard/content/datatype' )}{/if}</td></tr>
+{undef $mv_license}
+{/if}
 
 </table>
 {/if}

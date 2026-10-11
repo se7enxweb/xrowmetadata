@@ -85,6 +85,9 @@
 </div>
 {undef $og_allowed $og_own_id $og_own_info $og_shown_info}
 
+{* The license: the object's own choice, else the class default, else the installation default *}
+{include uri='design:xrowmetadata/license_edit.tpl' attribute=$attribute attribute_base=$attribute_base}
+
 
 <div class="block">
 

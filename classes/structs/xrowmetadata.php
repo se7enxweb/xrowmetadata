@@ -41,6 +41,42 @@ class xrowMetaData extends ezcBaseStruct
     public $og_image_type;
 
     /**
+     * The license of the object: an id of the license catalogue
+     * (xrowMetaDataLicense), '' to use the inherited one (class default,
+     * else the installation default). Stored as <license>; data saved before
+     * 1.4.9 has none and is ''.
+     */
+    public $license = '';
+    /**
+     * The copyright holder and the year (or range, "2019-2026") the license
+     * notice names. '' when not set.
+     */
+    public $license_holder = '';
+    public $license_year = '';
+    /**
+     * For a license whose terms are given per object (LicenseRef-Custom,
+     * or a catalogue entry with "per_object"): where its terms are published and/or the terms.
+     */
+    public $license_custom_url = '';
+    public $license_custom_terms = '';
+    /**
+     * Whether the class lets an object choose its own license ("Allow a
+     * per-object license" of the class attribute). When false the class
+     * default is used and $license is kept but unused.
+     */
+    public $license_allowed = true;
+    /**
+     * The default license id of the class, '' for none.
+     */
+    public $license_class = '';
+
+    /**
+     * The picker data and the inherited license, made when a template first
+     * asks for them.
+     */
+    protected $licenseCache = array();
+
+    /**
      * The picture of og_image (xrowMetaDataOpenGraphImage::info()), made when
      * a template first asks for it.
      */
@@ -98,7 +134,9 @@ class xrowMetaData extends ezcBaseStruct
     function attributes()
     {
         return array('title','description','keywords','sitemap_use','canonical_url','og_image','og_image_width','og_image_height','og_image_alt','og_image_type',
-                     'og_image_own','og_image_source','og_image_allowed','og_image_info','og_image_object');
+                     'og_image_own','og_image_source','og_image_allowed','og_image_info','og_image_object',
+                     'license','license_holder','license_year','license_custom_url','license_custom_terms',
+                     'license_allowed','license_class','license_info','license_inherited','license_effective','license_choices');
     }
 
     function attribute( $name )
@@ -109,6 +147,35 @@ class xrowMetaData extends ezcBaseStruct
                 return $this->ogImageInfo();
             case 'og_image_object':
                 return xrowMetaDataOpenGraphImage::usableObject( $this->og_image );
+            case 'license_info':
+                // The catalogue entry of the object's own license, false when
+                // none is chosen or the id is not in the catalogue
+                return $this->license !== '' ? xrowMetaDataLicensePicker::info( $this->license ) : false;
+            case 'license_inherited':
+                // What applies when the object chooses none: class, else installation
+                if ( !array_key_exists( 'inherited', $this->licenseCache ) )
+                {
+                    $this->licenseCache['inherited'] = xrowMetaDataLicensePicker::inherited( $this->license_class );
+                }
+                return $this->licenseCache['inherited'];
+            case 'license_effective':
+                // What the page states: the own license (when allowed), else the inherited one
+                if ( $this->license_allowed && $this->license !== '' )
+                {
+                    $info = xrowMetaDataLicensePicker::info( $this->license );
+                    if ( $info )
+                    {
+                        $info['source'] = 'object';
+                        return $info;
+                    }
+                }
+                return $this->attribute( 'license_inherited' );
+            case 'license_choices':
+                if ( !array_key_exists( 'choices', $this->licenseCache ) )
+                {
+                    $this->licenseCache['choices'] = xrowMetaDataLicensePicker::choices( $this->license );
+                }
+                return $this->licenseCache['choices'];
         }
         return $this->$name;
     }
@@ -154,6 +221,31 @@ class xrowMetaData extends ezcBaseStruct
         {
             $meta->og_image_allowed = (bool) $array['og_image_allowed'];
         }
+        $meta->setLicense( $array );
+        if ( array_key_exists( 'license_allowed', $array ) )
+        {
+            $meta->license_allowed = (bool) $array['license_allowed'];
+        }
+        if ( isset( $array['license_class'] ) && is_scalar( $array['license_class'] ) )
+        {
+            $meta->license_class = (string) $array['license_class'];
+        }
         return $meta;
+    }
+
+    /**
+     * Sets the stored license fields from $array (missing keys keep their
+     * value, non-text values are taken as '').
+     */
+    public function setLicense( array $array )
+    {
+        foreach ( array( 'license', 'license_holder', 'license_year', 'license_custom_url', 'license_custom_terms' ) as $key )
+        {
+            if ( array_key_exists( $key, $array ) )
+            {
+                $this->$key = is_scalar( $array[$key] ) ? trim( (string) $array[$key] ) : '';
+            }
+        }
+        $this->licenseCache = array();
     }
 }

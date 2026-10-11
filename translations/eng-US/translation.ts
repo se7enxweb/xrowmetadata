@@ -19,6 +19,26 @@
         <source>Title required.</source>
         <translation>Title required.</translation>
     </message>
+    <message>
+        <source>The license year must be a year (2026) or a range of years (2019-2026).</source>
+        <translation>The license year must be a year (2026) or a range of years (2019-2026).</translation>
+    </message>
+    <message>
+        <source>The address of the license terms must be a full address starting with https:// or http://.</source>
+        <translation>The address of the license terms must be a full address starting with https:// or http://.</translation>
+    </message>
+    <message>
+        <source>The license "%id" is not in the license catalogue. Choose a license in the list (type a part of its name or SPDX id into the search field to find it), or choose "Use inherited".</source>
+        <translation>The license "%id" is not in the license catalogue. Choose a license in the list (type a part of its name or SPDX id into the search field to find it), or choose "Use inherited".</translation>
+    </message>
+    <message>
+        <source>The license "%id" is not allowed on this installation. Choose a license in the list, or choose "Use inherited".</source>
+        <translation>The license "%id" is not allowed on this installation. Choose a license in the list, or choose "Use inherited".</translation>
+    </message>
+    <message>
+        <source>A custom license needs the address of its terms or the text of its terms.</source>
+        <translation>A custom license needs the address of its terms or the text of its terms.</translation>
+    </message>
 </context>
 <context>
     <name>design/standard/class/datatype</name>
@@ -174,6 +194,210 @@
         <source>Priority</source>
         <translation>Priority</translation>
     </message>
+    <message>
+        <source>License</source>
+        <translation>License</translation>
+    </message>
+    <message>
+        <source>Use inherited: none</source>
+        <translation>Use inherited: none</translation>
+    </message>
+    <message>
+        <source>Use inherited: %name</source>
+        <translation>Use inherited: %name</translation>
+    </message>
+    <message>
+        <source>Inherited from class: %name</source>
+        <translation>Inherited from class: %name</translation>
+    </message>
+    <message>
+        <source>Inherited from installation: %name</source>
+        <translation>Inherited from installation: %name</translation>
+    </message>
+    <message>
+        <source>No license is inherited: without a choice here the page states no license.</source>
+        <translation>No license is inherited: without a choice here the page states no license.</translation>
+    </message>
+    <message>
+        <source>Search licenses</source>
+        <translation>Search licenses</translation>
+    </message>
+    <message>
+        <source>Name or SPDX id, e.g. CC BY 4.0 or GPL-3.0</source>
+        <translation>Name or SPDX id, e.g. CC BY 4.0 or GPL-3.0</translation>
+    </message>
+    <message>
+        <source>Group</source>
+        <translation>Group</translation>
+    </message>
+    <message>
+        <source>All groups</source>
+        <translation>All groups</translation>
+    </message>
+    <message>
+        <source>Open source</source>
+        <translation>Open source</translation>
+    </message>
+    <message>
+        <source>Free software</source>
+        <translation>Free software</translation>
+    </message>
+    <message>
+        <source>Copyleft</source>
+        <translation>Copyleft</translation>
+    </message>
+    <message>
+        <source>Permissive</source>
+        <translation>Permissive</translation>
+    </message>
+    <message>
+        <source>Content (Creative Commons)</source>
+        <translation>Content (Creative Commons)</translation>
+    </message>
+    <message>
+        <source>Public domain</source>
+        <translation>Public domain</translation>
+    </message>
+    <message>
+        <source>Non-free</source>
+        <translation>Non-free</translation>
+    </message>
+    <message>
+        <source>Other licenses</source>
+        <translation>Other licenses</translation>
+    </message>
+    <message>
+        <source>Non-free: proprietary, all rights reserved</source>
+        <translation>Non-free: proprietary, all rights reserved</translation>
+    </message>
+    <message>
+        <source>Non-free: non-commercial</source>
+        <translation>Non-free: non-commercial</translation>
+    </message>
+    <message>
+        <source>Non-free: no derivatives</source>
+        <translation>Non-free: no derivatives</translation>
+    </message>
+    <message>
+        <source>Non-free: custom terms</source>
+        <translation>Non-free: custom terms</translation>
+    </message>
+    <message>
+        <source>Non-free: other</source>
+        <translation>Non-free: other</translation>
+    </message>
+    <message>
+        <source>Show retired licenses</source>
+        <translation>Show retired licenses</translation>
+    </message>
+    <message>
+        <source>retired</source>
+        <translation>retired</translation>
+    </message>
+    <message>
+        <source>%id (not in the license catalogue)</source>
+        <translation>%id (not in the license catalogue)</translation>
+    </message>
+    <message>
+        <source>%shown of %total licenses shown</source>
+        <translation>%shown of %total licenses shown</translation>
+    </message>
+    <message>
+        <source>Terms of %name:</source>
+        <translation>Terms of %name:</translation>
+    </message>
+    <message>
+        <source>Commercial use</source>
+        <translation>Commercial use</translation>
+    </message>
+    <message>
+        <source>Derivatives</source>
+        <translation>Derivatives</translation>
+    </message>
+    <message>
+        <source>Share-alike</source>
+        <translation>Share-alike</translation>
+    </message>
+    <message>
+        <source>Attribution</source>
+        <translation>Attribution</translation>
+    </message>
+    <message>
+        <source>allowed</source>
+        <translation>allowed</translation>
+    </message>
+    <message>
+        <source>not allowed</source>
+        <translation>not allowed</translation>
+    </message>
+    <message>
+        <source>required</source>
+        <translation>required</translation>
+    </message>
+    <message>
+        <source>not required</source>
+        <translation>not required</translation>
+    </message>
+    <message>
+        <source>not stated</source>
+        <translation>not stated</translation>
+    </message>
+    <message>
+        <source>Read the license</source>
+        <translation>Read the license</translation>
+    </message>
+    <message>
+        <source>The class sets no license, and the installation has no default license.</source>
+        <translation>The class sets no license, and the installation has no default license.</translation>
+    </message>
+    <message>
+        <source>A license chosen earlier for this object is kept, but not stated while the class sets the license.</source>
+        <translation>A license chosen earlier for this object is kept, but not stated while the class sets the license.</translation>
+    </message>
+    <message>
+        <source>Address of the license terms</source>
+        <translation>Address of the license terms</translation>
+    </message>
+    <message>
+        <source>License terms</source>
+        <translation>License terms</translation>
+    </message>
+    <message>
+        <source>A custom license needs the address of its terms or the text of its terms.</source>
+        <translation>A custom license needs the address of its terms or the text of its terms.</translation>
+    </message>
+    <message>
+        <source>Copyright holder</source>
+        <translation>Copyright holder</translation>
+    </message>
+    <message>
+        <source>Year</source>
+        <translation>Year</translation>
+    </message>
+    <message>
+        <source>Default license</source>
+        <translation>Default license</translation>
+    </message>
+    <message>
+        <source>An object without a license of its own states this license; without one here, the default license of the installation applies.</source>
+        <translation>An object without a license of its own states this license; without one here, the default license of the installation applies.</translation>
+    </message>
+    <message>
+        <source>Allow a per-object license</source>
+        <translation>Allow a per-object license</translation>
+    </message>
+    <message>
+        <source>When cleared, every object states the default license above, the object edit form shows it read-only, and a license an object chose earlier is kept but not used.</source>
+        <translation>When cleared, every object states the default license above, the object edit form shows it read-only, and a license an object chose earlier is kept but not used.</translation>
+    </message>
+    <message>
+        <source>None</source>
+        <translation>None</translation>
+    </message>
+    <message>
+        <source>Non-free: source available</source>
+        <translation>Non-free: source available</translation>
+    </message>
 </context>
 <context>
     <name>design/standard/content/datatype</name>
@@ -200,6 +424,45 @@
     <message>
         <source>Priority</source>
         <translation>Priority</translation>
+    </message>
+    <message>
+        <source>License</source>
+        <translation>License</translation>
+    </message>
+    <message>
+        <source>set by the class</source>
+        <translation>set by the class</translation>
+    </message>
+    <message>
+        <source>installation default</source>
+        <translation>installation default</translation>
+    </message>
+    <message>
+        <source>None</source>
+        <translation>None</translation>
+    </message>
+</context>
+<context>
+    <name>extension/xrowmetadata/license</name>
+    <message>
+        <source>Licensed under %license</source>
+        <translation>Licensed under %license</translation>
+    </message>
+    <message>
+        <source>Dedicated to the public domain with %license</source>
+        <translation>Dedicated to the public domain with %license</translation>
+    </message>
+    <message>
+        <source>%license · Free of known copyright restrictions</source>
+        <translation>%license · Free of known copyright restrictions</translation>
+    </message>
+    <message>
+        <source>Terms of use: %license</source>
+        <translation>Terms of use: %license</translation>
+    </message>
+    <message>
+        <source>All rights reserved</source>
+        <translation>All rights reserved</translation>
     </message>
 </context>
 </TS>
