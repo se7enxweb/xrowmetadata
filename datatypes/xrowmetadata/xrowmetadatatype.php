@@ -96,11 +96,22 @@ class xrowMetaDataType extends eZDataType
             // (custom actions), never typed in: the form keeps what is stored
             $current = self::fetchMetaData( $contentObjectAttribute );
             $data['og_image'] = $current->storedOgImage();
-            foreach ( array( 'title', 'description', 'priority', 'change', 'sitemap_use', 'canonical_url', 'og_image_width', 'og_image_height', 'og_image_alt', 'og_image_type' ) as $key )
+            foreach ( array( 'title', 'description', 'priority', 'change', 'sitemap_use', 'canonical_url' ) as $key )
             {
                 if ( !isset( $data[$key] ) || !is_scalar( $data[$key] ) )
                 {
                     $data[$key] = $key === 'sitemap_use' ? '0' : '';
+                }
+            }
+            // An Open Graph field the form does not send keeps its stored value:
+            // the form no longer offers og_image_width and og_image_height (the
+            // size printed is the image alias's), and an override template may
+            // leave out alt and type
+            foreach ( array( 'og_image_width', 'og_image_height', 'og_image_alt', 'og_image_type' ) as $key )
+            {
+                if ( !isset( $data[$key] ) || !is_scalar( $data[$key] ) )
+                {
+                    $data[$key] = (string) $current->$key;
                 }
             }
 

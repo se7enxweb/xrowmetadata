@@ -77,6 +77,12 @@ edit form ("Choose image", "Remove image"); it overrides the class default.
   in `[ViewCacheSettings] ClearRelationTypes`).
 - An image in the trash, unpublished or deleted is passed over and the class
   default is shown. A deleted image is also taken out of the attribute.
+- Width and height: `og:image:width` and `og:image:height` are the size of
+  the image alias, printed next to the image in the edit form. The form no
+  longer has width and height inputs (an image is always an object, there is
+  no manual image URL); values stored by earlier versions are kept in the
+  attribute (`<og_image_width>`, `<og_image_height>`) but not printed. Alt
+  and type still override the image's own.
 - `[OpenGraph]` in `xrowmetadata.ini`: the classes that may be chosen
   (`ImageClasses[]`), where the browser starts, the image attributes searched
   and the image alias (`opengraph`, at most 1200 x 1200, in `image.ini`).

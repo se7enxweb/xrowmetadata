@@ -39,7 +39,8 @@
     {$keywords}
 </div>
 {/if}
-{* Open Graph image: the object's own choice (an object relation), else the class default *}
+{* Open Graph image: the object's own choice (an object relation), else the class default.
+   The size printed is the size of the image alias that og:image uses. *}
 {def $og_own_id = $attribute.content.og_image_own|int()
      $og_own_info = false()
      $og_shown_info = $attribute.content.og_image_info}
@@ -50,6 +51,7 @@
         <div class="xrowmetadata-og-image-chosen">
             {if $og_own_info.thumbnail_url|ne('')}<img src="{$og_own_info.thumbnail_url|wash()}" alt="{$og_own_info.alt|wash()}" style="max-width:200px; max-height:120px; display:block; margin-bottom:0.5em;" />{/if}
             <span class="xrowmetadata-og-image-name">{$og_own_info.name|wash()}</span>
+            {if and( $og_own_info.width|ne(''), $og_own_info.height|ne('') )}<span class="xrowmetadata-og-image-size">({$og_own_info.width|wash()} x {$og_own_info.height|wash()} px)</span>{/if}
         </div>
         <p class="xrowmetadata-og-image-note">{'This image is shared as the page image (og:image, twitter:image) instead of the default of the class.'|i18n( 'design/standard/class/datatype' )}</p>
     {elseif $og_own_id|gt(0)}
@@ -123,14 +125,8 @@
             <input id="ezcoa-{if ne( $attribute_base, 'ContentObjectAttribute' )}{$attribute_base}-{/if}{$attribute.contentclassattribute_id}_{$attribute.contentclass_attribute_identifier}_keywords" class="box ezcc-{$attribute.object.content_class.identifier} ezcca-{$attribute.object.content_class.identifier}_{$attribute.contentclass_attribute_identifier}" type="url" name="{$attribute_base}_xrowmetadata_data_array_{$attribute.id}[canonical_url]" size="100" maxsize="1055" value="{$attribute.content.canonical_url|wash()}" />
         </div>
 
-        <div class="element">
-            <label>{'Open Graph image width'|i18n( 'design/standard/class/datatype' )}:</label>
-            <input class="box" type="number" min="0" name="{$attribute_base}_xrowmetadata_data_array_{$attribute.id}[og_image_width]" size="10" value="{$attribute.content.og_image_width|wash()}" />
-        </div>
-        <div class="element">
-            <label>{'Open Graph image height'|i18n( 'design/standard/class/datatype' )}:</label>
-            <input class="box" type="number" min="0" name="{$attribute_base}_xrowmetadata_data_array_{$attribute.id}[og_image_height]" size="10" value="{$attribute.content.og_image_height|wash()}" />
-        </div>
+        {* No width and height inputs: og:image:width and og:image:height are the size of the image alias.
+           Stored values are kept (the datatype keeps a field the form does not send). *}
         <div class="element">
             <label>{'Open Graph image alt'|i18n( 'design/standard/class/datatype' )}:</label>
             <input class="box" type="text" name="{$attribute_base}_xrowmetadata_data_array_{$attribute.id}[og_image_alt]" size="100" value="{$attribute.content.og_image_alt|wash()}" />

@@ -24,6 +24,11 @@ class xrowMetaData extends ezcBaseStruct
      * Where og_image comes from: 'object', 'class' or ''.
      */
     public $og_image_source = '';
+    /**
+     * Kept for stored data only. The size printed for og:image is the size
+     * of the image alias (og_image_info), not these values; the edit form no
+     * longer offers them.
+     */
     public $og_image_width;
     public $og_image_height;
     public $og_image_alt;
