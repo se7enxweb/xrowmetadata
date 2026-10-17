@@ -6,8 +6,8 @@
 
 namespace
 {
-if ( !function_exists( 'addFiles' ) ) {
-function addFiles( &$index, $dirname, $dirArray )
+if ( !function_exists( 'expModuleViewSitemapsIndexAddFiles' ) ) {
+function expModuleViewSitemapsIndexAddFiles( &$index, $dirname, $dirArray )
 {
     try
     {
@@ -114,7 +114,7 @@ class Index extends \Exponential\Runnable\ModuleView
 
         foreach ( $dirArray as $item )
         {
-            addFiles( $index, $item, $dirArray );
+            expModuleViewSitemapsIndexAddFiles( $index, $item, $dirArray );
         }
 
 
