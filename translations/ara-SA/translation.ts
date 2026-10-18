@@ -173,7 +173,7 @@
     </message>
     <message>
         <source>Inherited from installation: %name</source>
-        <translation>موروث من التثبيتة: %name</translation>
+        <translation>موروث من التثبيت: %name</translation>
     </message>
     <message>
         <source>No license is inherited: without a choice here the page states no license.</source>
@@ -309,7 +309,7 @@
     </message>
     <message>
         <source>The class sets no license, and the installation has no default license.</source>
-        <translation>لا تحدد الفئة أي ترخيص، وليس للتثبيتة ترخيص افتراضي.</translation>
+        <translation>لا تحدد الفئة أي ترخيص، وليس للتثبيت ترخيص افتراضي.</translation>
     </message>
     <message>
         <source>A license chosen earlier for this object is kept, but not stated while the class sets the license.</source>
@@ -341,7 +341,7 @@
     </message>
     <message>
         <source>An object without a license of its own states this license; without one here, the default license of the installation applies.</source>
-        <translation>الكائن الذي ليس له ترخيص خاص يذكر هذا الترخيص؛ وإن لم يُحدَّد هنا، يُطبَّق الترخيص الافتراضي للتثبيتة.</translation>
+        <translation>الكائن الذي ليس له ترخيص خاص يذكر هذا الترخيص؛ وإن لم يُحدَّد هنا، يُطبَّق الترخيص الافتراضي للتثبيت.</translation>
     </message>
     <message>
         <source>Allow a per-object license</source>
@@ -396,7 +396,7 @@
     </message>
     <message>
         <source>installation default</source>
-        <translation>الافتراضي للتثبيتة</translation>
+        <translation>الافتراضي للتثبيت</translation>
     </message>
     <message>
         <source>None</source>
@@ -439,7 +439,7 @@
     </message>
     <message>
         <source>The license "%id" is not allowed on this installation. Choose a license in the list, or choose "Use inherited".</source>
-        <translation>الترخيص &quot;%id&quot; غير مسموح به في هذه التثبيتة. اختر ترخيصًا من القائمة، أو اختر &quot;استخدام الموروث&quot;.</translation>
+        <translation>الترخيص &quot;%id&quot; غير مسموح به في هذا التثبيت. اختر ترخيصًا من القائمة، أو اختر &quot;استخدام الموروث&quot;.</translation>
     </message>
     <message>
         <source>A custom license needs the address of its terms or the text of its terms.</source>
