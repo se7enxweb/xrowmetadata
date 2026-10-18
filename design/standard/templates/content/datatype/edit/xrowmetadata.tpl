@@ -44,7 +44,7 @@
     {if $og_allowed|not}
         {if $og_shown_info}
         <div class="xrowmetadata-og-image-chosen xrowmetadata-og-image-class">
-            {if $og_shown_info.thumbnail_url|ne('')}<img src="{$og_shown_info.thumbnail_url|wash()}" alt="{$og_shown_info.alt|wash()}" style="max-width:200px; max-height:120px; display:block; margin-bottom:0.5em;" />{/if}
+            {if $og_shown_info.thumbnail_url|ne('')}<img src="{$og_shown_info.thumbnail_url|wash()}" alt="{$og_shown_info.alt|wash()}" class="xrowmetadata-og-image-thumb" />{/if}
             <span class="xrowmetadata-og-image-name">{$og_shown_info.name|wash()}</span>
             {if and( $og_shown_info.width|ne(''), $og_shown_info.height|ne('') )}<span class="xrowmetadata-og-image-size">({$og_shown_info.width|wash()} x {$og_shown_info.height|wash()} px)</span>{/if}
         </div>
@@ -58,7 +58,7 @@
     {else}
     {if $og_own_info}
         <div class="xrowmetadata-og-image-chosen">
-            {if $og_own_info.thumbnail_url|ne('')}<img src="{$og_own_info.thumbnail_url|wash()}" alt="{$og_own_info.alt|wash()}" style="max-width:200px; max-height:120px; display:block; margin-bottom:0.5em;" />{/if}
+            {if $og_own_info.thumbnail_url|ne('')}<img src="{$og_own_info.thumbnail_url|wash()}" alt="{$og_own_info.alt|wash()}" class="xrowmetadata-og-image-thumb" />{/if}
             <span class="xrowmetadata-og-image-name">{$og_own_info.name|wash()}</span>
             {if and( $og_own_info.width|ne(''), $og_own_info.height|ne('') )}<span class="xrowmetadata-og-image-size">({$og_own_info.width|wash()} x {$og_own_info.height|wash()} px)</span>{/if}
         </div>

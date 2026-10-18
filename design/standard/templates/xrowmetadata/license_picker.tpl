@@ -107,21 +107,7 @@
     </div>
 </div>
 
-{literal}
-<style>
-.xrowmetadata-license-picker { max-width: 48em; }
-.xrowmetadata-license-filter { display: flex; flex-wrap: wrap; gap: 0.5em 1em; align-items: flex-end; margin: 0.25em 0 0.5em; }
-.xrowmetadata-license-filter-item { display: inline-flex; flex-direction: column; min-width: 0; }
-.xrowmetadata-license-filter-search { flex: 1 1 16em; }
-.xrowmetadata-license-filter-item label { font-weight: normal; }
-.xrowmetadata-license-select { width: 100%; max-width: 100%; height: auto; }
-/* A list box, not a drop-down: no drop-down arrow of the design's select style */
-select.xrowmetadata-license-select[size] { background-image: none; padding-right: 0.5em; }
-.xrowmetadata-license-select option { white-space: normal; }
-.xrowmetadata-license-terms { list-style: none; margin: 0.25em 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.25em 1.5em; }
-.xrowmetadata-license-count { opacity: 0.8; }
-</style>
-{/literal}
+{* The picker's look is in stylesheets/xrowmetadata.css, loaded by design.ini [StylesheetSettings] *}
 {* The picker's script (design/standard/javascript/xrowmetadata_license_picker.js) sets up every picker of the page once *}
 {ezscript( array( 'xrowmetadata_license_picker.js' ) )}
 {undef $lp_choices $lp_info $lp_shown $lp_input_class $lp_has_retired}

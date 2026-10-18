@@ -26,7 +26,7 @@
                 <td>
                     {$mt_og_object.name|wash()}
                     {if $mt_image_path|ne('')}
-                        <br /><img src="{concat('/', $mt_image_path)}" alt="{$mt_og_object.name|wash()}" style="max-width:200px; max-height:100px;" />
+                        <br /><img src="{concat('/', $mt_image_path)}" alt="{$mt_og_object.name|wash()}" class="xrowmetadata-class-og-image-thumb" />
                     {/if}
                 </td>
                 <td>{if $mt_image_attr}{$mt_image_attr.data_type_string|wash()}{else}{$mt_og_object.class_name|wash()}{/if}</td>
