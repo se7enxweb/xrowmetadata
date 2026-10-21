@@ -438,12 +438,12 @@
         <translation>Adressen till licensvillkoren måste vara en fullständig adress som börjar med https:// eller http://.</translation>
     </message>
     <message>
-        <source>The license "%id" is not in the license catalogue. Choose a license in the list (type a part of its name or SPDX id into the search field to find it), or choose "Use inherited".</source>
-        <translation>Licensen "%id" finns inte i licenskatalogen. Välj en licens i listan (skriv en del av dess namn eller SPDX-id i sökfältet för att hitta den), eller välj "Använd ärvd".</translation>
+        <source>The license &quot;%id&quot; is not in the license catalogue. Choose a license in the list (type a part of its name or SPDX id into the search field to find it), or choose &quot;Use inherited&quot;.</source>
+        <translation>Licensen &quot;%id&quot; finns inte i licenskatalogen. Välj en licens i listan (skriv en del av dess namn eller SPDX-id i sökfältet för att hitta den), eller välj &quot;Använd ärvd&quot;.</translation>
     </message>
     <message>
-        <source>The license "%id" is not allowed on this installation. Choose a license in the list, or choose "Use inherited".</source>
-        <translation>Licensen "%id" är inte tillåten i den här installationen. Välj en licens i listan, eller välj "Använd ärvd".</translation>
+        <source>The license &quot;%id&quot; is not allowed on this installation. Choose a license in the list, or choose &quot;Use inherited&quot;.</source>
+        <translation>Licensen &quot;%id&quot; är inte tillåten i den här installationen. Välj en licens i listan, eller välj &quot;Använd ärvd&quot;.</translation>
     </message>
     <message>
         <source>A custom license needs the address of its terms or the text of its terms.</source>

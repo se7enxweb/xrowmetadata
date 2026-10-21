@@ -85,7 +85,7 @@
     </message>
     <message>
         <source>The chosen image is no longer available (deleted, in the trash or unpublished). The default of the class is shared instead.</source>
-        <translation>L'immagine scelta non è più disponibile (eliminata, nel cestino o non pubblicata). Viene condivisa invece quella predefinita della classe.</translation>
+        <translation>L&apos;immagine scelta non è più disponibile (eliminata, nel cestino o non pubblicata). Viene condivisa invece quella predefinita della classe.</translation>
     </message>
     <message>
         <source>No image chosen for this object.</source>
@@ -93,7 +93,7 @@
     </message>
     <message>
         <source>The default of the class is shared: %name.</source>
-        <translation>Viene condivisa l'immagine predefinita della classe: %name.</translation>
+        <translation>Viene condivisa l&apos;immagine predefinita della classe: %name.</translation>
     </message>
     <message>
         <source>Choose image</source>
@@ -105,7 +105,7 @@
     </message>
     <message>
         <source>Remove image</source>
-        <translation>Elimina l'immagine</translation>
+        <translation>Elimina l&apos;immagine</translation>
     </message>
     <message>
         <source>Set by the class</source>
@@ -117,15 +117,15 @@
     </message>
     <message>
         <source>An image chosen earlier for this object is kept, but not shared while the class sets the image.</source>
-        <translation>Un'immagine scelta in precedenza per questo oggetto viene mantenuta, ma non condivisa finché è la classe a impostare l'immagine.</translation>
+        <translation>Un&apos;immagine scelta in precedenza per questo oggetto viene mantenuta, ma non condivisa finché è la classe a impostare l&apos;immagine.</translation>
     </message>
     <message>
         <source>Allow a per-object Open Graph image</source>
-        <translation>Consenti un'immagine Open Graph per oggetto</translation>
+        <translation>Consenti un&apos;immagine Open Graph per oggetto</translation>
     </message>
     <message>
         <source>When cleared, every object shares the default image above, the object edit form shows it read-only, and an image an object chose earlier is kept but not used.</source>
-        <translation>Se deselezionato, ogni oggetto condivide l'immagine predefinita qui sopra, il modulo di modifica dell'oggetto la mostra in sola lettura e un'immagine scelta in precedenza da un oggetto viene mantenuta ma non usata.</translation>
+        <translation>Se deselezionato, ogni oggetto condivide l&apos;immagine predefinita qui sopra, il modulo di modifica dell&apos;oggetto la mostra in sola lettura e un&apos;immagine scelta in precedenza da un oggetto viene mantenuta ma non usata.</translation>
     </message>
     <message>
         <source>Default Open Graph image</source>
@@ -173,7 +173,7 @@
     </message>
     <message>
         <source>Inherited from installation: %name</source>
-        <translation>Ereditato dall'installazione: %name</translation>
+        <translation>Ereditato dall&apos;installazione: %name</translation>
     </message>
     <message>
         <source>No license is inherited: without a choice here the page states no license.</source>
@@ -309,7 +309,7 @@
     </message>
     <message>
         <source>The class sets no license, and the installation has no default license.</source>
-        <translation>La classe non imposta alcuna licenza e l'installazione non ha una licenza predefinita.</translation>
+        <translation>La classe non imposta alcuna licenza e l&apos;installazione non ha una licenza predefinita.</translation>
     </message>
     <message>
         <source>A license chosen earlier for this object is kept, but not stated while the class sets the license.</source>
@@ -325,7 +325,7 @@
     </message>
     <message>
         <source>A custom license needs the address of its terms or the text of its terms.</source>
-        <translation>Una licenza personalizzata richiede l'indirizzo o il testo delle sue condizioni.</translation>
+        <translation>Una licenza personalizzata richiede l&apos;indirizzo o il testo delle sue condizioni.</translation>
     </message>
     <message>
         <source>Copyright holder</source>
@@ -341,7 +341,7 @@
     </message>
     <message>
         <source>An object without a license of its own states this license; without one here, the default license of the installation applies.</source>
-        <translation>Un oggetto senza una propria licenza indica questa licenza; se qui non ce n'è una, si applica la licenza predefinita dell'installazione.</translation>
+        <translation>Un oggetto senza una propria licenza indica questa licenza; se qui non ce n&apos;è una, si applica la licenza predefinita dell&apos;installazione.</translation>
     </message>
     <message>
         <source>Allow a per-object license</source>
@@ -349,7 +349,7 @@
     </message>
     <message>
         <source>When cleared, every object states the default license above, the object edit form shows it read-only, and a license an object chose earlier is kept but not used.</source>
-        <translation>Se deselezionato, ogni oggetto indica la licenza predefinita qui sopra, il modulo di modifica dell'oggetto la mostra in sola lettura e una licenza scelta in precedenza da un oggetto viene mantenuta ma non usata.</translation>
+        <translation>Se deselezionato, ogni oggetto indica la licenza predefinita qui sopra, il modulo di modifica dell&apos;oggetto la mostra in sola lettura e una licenza scelta in precedenza da un oggetto viene mantenuta ma non usata.</translation>
     </message>
     <message>
         <source>None</source>
@@ -396,7 +396,7 @@
     </message>
     <message>
         <source>installation default</source>
-        <translation>predefinito dell'installazione</translation>
+        <translation>predefinito dell&apos;installazione</translation>
     </message>
     <message>
         <source>None</source>
@@ -431,27 +431,27 @@
     </message>
     <message>
         <source>The license year must be a year (2026) or a range of years (2019-2026).</source>
-        <translation>L'anno della licenza deve essere un anno (2026) o un intervallo di anni (2019-2026).</translation>
+        <translation>L&apos;anno della licenza deve essere un anno (2026) o un intervallo di anni (2019-2026).</translation>
     </message>
     <message>
         <source>The address of the license terms must be a full address starting with https:// or http://.</source>
-        <translation>L'indirizzo delle condizioni di licenza deve essere un indirizzo completo che inizia con https:// o http://.</translation>
+        <translation>L&apos;indirizzo delle condizioni di licenza deve essere un indirizzo completo che inizia con https:// o http://.</translation>
     </message>
     <message>
-        <source>The license "%id" is not in the license catalogue. Choose a license in the list (type a part of its name or SPDX id into the search field to find it), or choose "Use inherited".</source>
-        <translation>La licenza "%id" non è presente nel catalogo delle licenze. Scegli una licenza dall'elenco (digita una parte del suo nome o dell'id SPDX nel campo di ricerca per trovarla) oppure scegli "Usa ereditato".</translation>
+        <source>The license &quot;%id&quot; is not in the license catalogue. Choose a license in the list (type a part of its name or SPDX id into the search field to find it), or choose &quot;Use inherited&quot;.</source>
+        <translation>La licenza &quot;%id&quot; non è presente nel catalogo delle licenze. Scegli una licenza dall&apos;elenco (digita una parte del suo nome o dell&apos;id SPDX nel campo di ricerca per trovarla) oppure scegli &quot;Usa ereditato&quot;.</translation>
     </message>
     <message>
-        <source>The license "%id" is not allowed on this installation. Choose a license in the list, or choose "Use inherited".</source>
-        <translation>La licenza "%id" non è consentita in questa installazione. Scegli una licenza dall'elenco oppure scegli "Usa ereditato".</translation>
+        <source>The license &quot;%id&quot; is not allowed on this installation. Choose a license in the list, or choose &quot;Use inherited&quot;.</source>
+        <translation>La licenza &quot;%id&quot; non è consentita in questa installazione. Scegli una licenza dall&apos;elenco oppure scegli &quot;Usa ereditato&quot;.</translation>
     </message>
     <message>
         <source>A custom license needs the address of its terms or the text of its terms.</source>
-        <translation>Una licenza personalizzata richiede l'indirizzo o il testo delle sue condizioni.</translation>
+        <translation>Una licenza personalizzata richiede l&apos;indirizzo o il testo delle sue condizioni.</translation>
     </message>
     <message>
         <source>Canonical url must use https protocol.</source>
-        <translation>L'URL canonico deve usare il protocollo https.</translation>
+        <translation>L&apos;URL canonico deve usare il protocollo https.</translation>
     </message>
 </context>
 <context>
@@ -470,7 +470,7 @@
     </message>
     <message>
         <source>Terms of use: %license</source>
-        <translation>Condizioni d'uso: %license</translation>
+        <translation>Condizioni d&apos;uso: %license</translation>
     </message>
     <message>
         <source>All rights reserved</source>

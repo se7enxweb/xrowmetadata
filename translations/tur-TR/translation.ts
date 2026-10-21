@@ -438,12 +438,12 @@
         <translation>Lisans koşullarının adresi https:// veya http:// ile başlayan tam bir adres olmalıdır.</translation>
     </message>
     <message>
-        <source>The license "%id" is not in the license catalogue. Choose a license in the list (type a part of its name or SPDX id into the search field to find it), or choose "Use inherited".</source>
-        <translation>"%id" lisansı lisans kataloğunda yok. Listeden bir lisans seçin (bulmak için adının veya SPDX kimliğinin bir kısmını arama alanına yazın) ya da "Devralınanı kullan" seçeneğini seçin.</translation>
+        <source>The license &quot;%id&quot; is not in the license catalogue. Choose a license in the list (type a part of its name or SPDX id into the search field to find it), or choose &quot;Use inherited&quot;.</source>
+        <translation>&quot;%id&quot; lisansı lisans kataloğunda yok. Listeden bir lisans seçin (bulmak için adının veya SPDX kimliğinin bir kısmını arama alanına yazın) ya da &quot;Devralınanı kullan&quot; seçeneğini seçin.</translation>
     </message>
     <message>
-        <source>The license "%id" is not allowed on this installation. Choose a license in the list, or choose "Use inherited".</source>
-        <translation>"%id" lisansına bu kurulumda izin verilmiyor. Listeden bir lisans seçin ya da "Devralınanı kullan" seçeneğini seçin.</translation>
+        <source>The license &quot;%id&quot; is not allowed on this installation. Choose a license in the list, or choose &quot;Use inherited&quot;.</source>
+        <translation>&quot;%id&quot; lisansına bu kurulumda izin verilmiyor. Listeden bir lisans seçin ya da &quot;Devralınanı kullan&quot; seçeneğini seçin.</translation>
     </message>
     <message>
         <source>A custom license needs the address of its terms or the text of its terms.</source>

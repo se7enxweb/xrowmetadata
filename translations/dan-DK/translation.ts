@@ -438,12 +438,12 @@
         <translation>Adressen på licensvilkårene skal være en fuld adresse, der starter med https:// eller http://.</translation>
     </message>
     <message>
-        <source>The license "%id" is not in the license catalogue. Choose a license in the list (type a part of its name or SPDX id into the search field to find it), or choose "Use inherited".</source>
-        <translation>Licensen "%id" findes ikke i licenskataloget. Vælg en licens på listen (skriv en del af dens navn eller SPDX-id i søgefeltet for at finde den), eller vælg "Brug nedarvet".</translation>
+        <source>The license &quot;%id&quot; is not in the license catalogue. Choose a license in the list (type a part of its name or SPDX id into the search field to find it), or choose &quot;Use inherited&quot;.</source>
+        <translation>Licensen &quot;%id&quot; findes ikke i licenskataloget. Vælg en licens på listen (skriv en del af dens navn eller SPDX-id i søgefeltet for at finde den), eller vælg &quot;Brug nedarvet&quot;.</translation>
     </message>
     <message>
-        <source>The license "%id" is not allowed on this installation. Choose a license in the list, or choose "Use inherited".</source>
-        <translation>Licensen "%id" er ikke tilladt på denne installation. Vælg en licens på listen, eller vælg "Brug nedarvet".</translation>
+        <source>The license &quot;%id&quot; is not allowed on this installation. Choose a license in the list, or choose &quot;Use inherited&quot;.</source>
+        <translation>Licensen &quot;%id&quot; er ikke tilladt på denne installation. Vælg en licens på listen, eller vælg &quot;Brug nedarvet&quot;.</translation>
     </message>
     <message>
         <source>A custom license needs the address of its terms or the text of its terms.</source>

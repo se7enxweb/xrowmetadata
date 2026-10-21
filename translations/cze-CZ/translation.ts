@@ -438,12 +438,12 @@
         <translation>Adresa licenčních podmínek musí být úplná adresa začínající https:// nebo http://.</translation>
     </message>
     <message>
-        <source>The license "%id" is not in the license catalogue. Choose a license in the list (type a part of its name or SPDX id into the search field to find it), or choose "Use inherited".</source>
-        <translation>Licence "%id" není v katalogu licencí. Vyberte licenci ze seznamu (pro její nalezení zadejte do vyhledávacího pole část jejího názvu nebo SPDX id), nebo zvolte "Použít zděděné".</translation>
+        <source>The license &quot;%id&quot; is not in the license catalogue. Choose a license in the list (type a part of its name or SPDX id into the search field to find it), or choose &quot;Use inherited&quot;.</source>
+        <translation>Licence &quot;%id&quot; není v katalogu licencí. Vyberte licenci ze seznamu (pro její nalezení zadejte do vyhledávacího pole část jejího názvu nebo SPDX id), nebo zvolte &quot;Použít zděděné&quot;.</translation>
     </message>
     <message>
-        <source>The license "%id" is not allowed on this installation. Choose a license in the list, or choose "Use inherited".</source>
-        <translation>Licence "%id" není v této instalaci povolena. Vyberte licenci ze seznamu, nebo zvolte "Použít zděděné".</translation>
+        <source>The license &quot;%id&quot; is not allowed on this installation. Choose a license in the list, or choose &quot;Use inherited&quot;.</source>
+        <translation>Licence &quot;%id&quot; není v této instalaci povolena. Vyberte licenci ze seznamu, nebo zvolte &quot;Použít zděděné&quot;.</translation>
     </message>
     <message>
         <source>A custom license needs the address of its terms or the text of its terms.</source>

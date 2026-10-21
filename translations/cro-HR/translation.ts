@@ -438,12 +438,12 @@
         <translation>Adresa uvjeta licence mora biti potpuna adresa koja počinje s https:// ili http://.</translation>
     </message>
     <message>
-        <source>The license "%id" is not in the license catalogue. Choose a license in the list (type a part of its name or SPDX id into the search field to find it), or choose "Use inherited".</source>
-        <translation>Licenca "%id" nije u katalogu licenci. Odaberite licencu s popisa (upišite dio njezina naziva ili SPDX id u polje za pretraživanje da biste je pronašli) ili odaberite "Koristi naslijeđeno".</translation>
+        <source>The license &quot;%id&quot; is not in the license catalogue. Choose a license in the list (type a part of its name or SPDX id into the search field to find it), or choose &quot;Use inherited&quot;.</source>
+        <translation>Licenca &quot;%id&quot; nije u katalogu licenci. Odaberite licencu s popisa (upišite dio njezina naziva ili SPDX id u polje za pretraživanje da biste je pronašli) ili odaberite &quot;Koristi naslijeđeno&quot;.</translation>
     </message>
     <message>
-        <source>The license "%id" is not allowed on this installation. Choose a license in the list, or choose "Use inherited".</source>
-        <translation>Licenca "%id" nije dopuštena na ovoj instalaciji. Odaberite licencu s popisa ili odaberite "Koristi naslijeđeno".</translation>
+        <source>The license &quot;%id&quot; is not allowed on this installation. Choose a license in the list, or choose &quot;Use inherited&quot;.</source>
+        <translation>Licenca &quot;%id&quot; nije dopuštena na ovoj instalaciji. Odaberite licencu s popisa ili odaberite &quot;Koristi naslijeđeno&quot;.</translation>
     </message>
     <message>
         <source>A custom license needs the address of its terms or the text of its terms.</source>

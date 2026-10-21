@@ -438,12 +438,12 @@
         <translation>Adres warunków licencji musi być pełnym adresem zaczynającym się od https:// lub http://.</translation>
     </message>
     <message>
-        <source>The license "%id" is not in the license catalogue. Choose a license in the list (type a part of its name or SPDX id into the search field to find it), or choose "Use inherited".</source>
-        <translation>Licencji "%id" nie ma w katalogu licencji. Należy wybrać licencję z listy (aby ją znaleźć, wpisać część jej nazwy lub id SPDX w polu wyszukiwania) albo wybrać "Użyj dziedziczonej".</translation>
+        <source>The license &quot;%id&quot; is not in the license catalogue. Choose a license in the list (type a part of its name or SPDX id into the search field to find it), or choose &quot;Use inherited&quot;.</source>
+        <translation>Licencji &quot;%id&quot; nie ma w katalogu licencji. Należy wybrać licencję z listy (aby ją znaleźć, wpisać część jej nazwy lub id SPDX w polu wyszukiwania) albo wybrać &quot;Użyj dziedziczonej&quot;.</translation>
     </message>
     <message>
-        <source>The license "%id" is not allowed on this installation. Choose a license in the list, or choose "Use inherited".</source>
-        <translation>Licencja "%id" nie jest dozwolona w tej instalacji. Należy wybrać licencję z listy albo wybrać "Użyj dziedziczonej".</translation>
+        <source>The license &quot;%id&quot; is not allowed on this installation. Choose a license in the list, or choose &quot;Use inherited&quot;.</source>
+        <translation>Licencja &quot;%id&quot; nie jest dozwolona w tej instalacji. Należy wybrać licencję z listy albo wybrać &quot;Użyj dziedziczonej&quot;.</translation>
     </message>
     <message>
         <source>A custom license needs the address of its terms or the text of its terms.</source>

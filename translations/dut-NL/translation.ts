@@ -438,12 +438,12 @@
         <translation>Het adres van de licentievoorwaarden moet een volledig adres zijn dat begint met https:// of http://.</translation>
     </message>
     <message>
-        <source>The license "%id" is not in the license catalogue. Choose a license in the list (type a part of its name or SPDX id into the search field to find it), or choose "Use inherited".</source>
-        <translation>De licentie "%id" staat niet in de licentiecatalogus. Kies een licentie in de lijst (typ een deel van de naam of SPDX-id in het zoekveld om haar te vinden), of kies "Overgeërfde gebruiken".</translation>
+        <source>The license &quot;%id&quot; is not in the license catalogue. Choose a license in the list (type a part of its name or SPDX id into the search field to find it), or choose &quot;Use inherited&quot;.</source>
+        <translation>De licentie &quot;%id&quot; staat niet in de licentiecatalogus. Kies een licentie in de lijst (typ een deel van de naam of SPDX-id in het zoekveld om haar te vinden), of kies &quot;Overgeërfde gebruiken&quot;.</translation>
     </message>
     <message>
-        <source>The license "%id" is not allowed on this installation. Choose a license in the list, or choose "Use inherited".</source>
-        <translation>De licentie "%id" is niet toegestaan op deze installatie. Kies een licentie in de lijst, of kies "Overgeërfde gebruiken".</translation>
+        <source>The license &quot;%id&quot; is not allowed on this installation. Choose a license in the list, or choose &quot;Use inherited&quot;.</source>
+        <translation>De licentie &quot;%id&quot; is niet toegestaan op deze installatie. Kies een licentie in de lijst, of kies &quot;Overgeërfde gebruiken&quot;.</translation>
     </message>
     <message>
         <source>A custom license needs the address of its terms or the text of its terms.</source>
