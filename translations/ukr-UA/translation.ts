@@ -129,7 +129,7 @@
     </message>
     <message>
         <source>Default Open Graph image</source>
-        <translation>Зображення Open Graph за замовчуванням</translation>
+        <translation>Типове зображення Open Graph</translation>
     </message>
     <message>
         <source>Yes</source>
