@@ -17,7 +17,7 @@
     </message>
     <message>
         <source>Use in sitemap</source>
-        <translation>Użyj w mapie witryny</translation>
+        <translation>Użyć w mapie witryny</translation>
     </message>
     <message>
         <source>Change frequence</source>
@@ -97,15 +97,15 @@
     </message>
     <message>
         <source>Choose image</source>
-        <translation>Wybierz obraz</translation>
+        <translation>Wybrać obraz</translation>
     </message>
     <message>
         <source>Choose an image object as the Open Graph image of this object</source>
-        <translation>Wybierz obiekt obrazu jako obraz Open Graph tego obiektu</translation>
+        <translation>Wybrać obiekt obrazu jako obraz Open Graph tego obiektu</translation>
     </message>
     <message>
         <source>Remove image</source>
-        <translation>Usuń obraz</translation>
+        <translation>Usunąć obraz</translation>
     </message>
     <message>
         <source>Set by the class</source>
@@ -121,7 +121,7 @@
     </message>
     <message>
         <source>Allow a per-object Open Graph image</source>
-        <translation>Zezwól na obraz Open Graph dla każdego obiektu</translation>
+        <translation>Zezwolić na obraz Open Graph dla każdego obiektu</translation>
     </message>
     <message>
         <source>When cleared, every object shares the default image above, the object edit form shows it read-only, and an image an object chose earlier is kept but not used.</source>
@@ -161,11 +161,11 @@
     </message>
     <message>
         <source>Use inherited: none</source>
-        <translation>Użyj dziedziczonej: brak</translation>
+        <translation>Użyć dziedziczonej: brak</translation>
     </message>
     <message>
         <source>Use inherited: %name</source>
-        <translation>Użyj dziedziczonej: %name</translation>
+        <translation>Użyć dziedziczonej: %name</translation>
     </message>
     <message>
         <source>Inherited from class: %name</source>
@@ -181,7 +181,7 @@
     </message>
     <message>
         <source>Search licenses</source>
-        <translation>Szukaj licencji</translation>
+        <translation>Szukać licencji</translation>
     </message>
     <message>
         <source>Name or SPDX id, e.g. CC BY 4.0 or GPL-3.0</source>
@@ -249,7 +249,7 @@
     </message>
     <message>
         <source>Show retired licenses</source>
-        <translation>Pokaż wycofane licencje</translation>
+        <translation>Pokazać wycofane licencje</translation>
     </message>
     <message>
         <source>retired</source>
@@ -305,7 +305,7 @@
     </message>
     <message>
         <source>Read the license</source>
-        <translation>Przeczytaj licencję</translation>
+        <translation>Przeczytać licencję</translation>
     </message>
     <message>
         <source>The class sets no license, and the installation has no default license.</source>
@@ -345,7 +345,7 @@
     </message>
     <message>
         <source>Allow a per-object license</source>
-        <translation>Zezwól na licencję dla każdego obiektu</translation>
+        <translation>Zezwolić na licencję dla każdego obiektu</translation>
     </message>
     <message>
         <source>When cleared, every object states the default license above, the object edit form shows it read-only, and a license an object chose earlier is kept but not used.</source>
@@ -376,7 +376,7 @@
     </message>
     <message>
         <source>Use in sitemap</source>
-        <translation>Użyj w mapie witryny</translation>
+        <translation>Użyć w mapie witryny</translation>
     </message>
     <message>
         <source>Change frequence</source>
