@@ -65,7 +65,7 @@
     </message>
     <message>
         <source>yes</source>
-        <translation>si</translation>
+        <translation>sí</translation>
     </message>
     <message>
         <source>automatic</source>
@@ -133,7 +133,7 @@
     </message>
     <message>
         <source>Yes</source>
-        <translation>Si</translation>
+        <translation>Sí</translation>
     </message>
     <message>
         <source>No, set by the class</source>
