@@ -39,6 +39,11 @@
         <source>A custom license needs the address of its terms or the text of its terms.</source>
         <translation>A custom license needs the address of its terms or the text of its terms.</translation>
     </message>
+    <message>
+        <source>Metadata</source>
+        <comment>Datatype name</comment>
+        <translation>Metadata</translation>
+    </message>
 </context>
 <context>
     <name>design/standard/class/datatype</name>
