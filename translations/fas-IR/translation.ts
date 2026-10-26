@@ -305,7 +305,7 @@
     </message>
     <message>
         <source>Read the license</source>
-        <translation>خواندن مجوز</translation>
+        <translation>خواندن مجوز نشر</translation>
     </message>
     <message>
         <source>The class sets no license, and the installation has no default license.</source>
