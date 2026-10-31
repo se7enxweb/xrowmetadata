@@ -1097,14 +1097,13 @@ class xrowMetaDataType extends eZDataType
                 $classNames = new eZSerializedObjectNameList( $class->attribute( 'serialized_name_list' ) );
                 $locales = $classNames->languageLocaleList();
                 $locales = $locales ? $locales : array( $class->attribute( 'top_priority_language_locale' ) );
-                $nameList->resetNameList();
+                // through the attribute's own name list: store() writes serialized_name_list from it
                 foreach ( $locales as $locale )
                 {
-                    $nameList->setNameByLanguageLocale( isset( self::$classAttributeNames[$locale] ) ? self::$classAttributeNames[$locale] : 'Meta Data', $locale );
+                    $classAttribute->setName( isset( self::$classAttributeNames[$locale] ) ? self::$classAttributeNames[$locale] : 'Meta Data', $locale );
                 }
                 $always = $classNames->alwaysAvailableLanguageLocale();
-                $nameList->setAlwaysAvailableLanguage( $always ? $always : $locales[0] );
-                $classAttribute->setAttribute( 'serialized_name_list', $nameList->serializeNames() );
+                $classAttribute->setAlwaysAvailableLanguage( $always ? $always : $locales[0] );
                 $changed = true;
             }
             if ( $classAttribute->attribute( 'category' ) !== 'meta' )
