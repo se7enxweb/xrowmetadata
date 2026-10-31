@@ -1016,10 +1016,17 @@ class xrowMetaDataType extends eZDataType
      * switches); a license or switch already set is kept. A class whose
      * "metadata" attribute has another datatype is left alone.
      *
+     * With $identifiers only the classes of those identifiers are handled
+     * (one that does not exist is passed over), e.g. the kernel's own help
+     * classes when it creates them; null handles every class.
+     *
+     * @param string $license catalogue id of the class default license
+     * @param string[]|null $identifiers
      * @return array lists of class identifiers: 'added', 'updated', 'kept', 'conflict'
      */
-    static function addToEveryClass( $license = 'GPL-2.0-or-later' )
+    static function addToEveryClass( $license = 'GPL-2.0-or-later', $identifiers = null )
     {
+        $only = is_array( $identifiers ) ? array_flip( array_map( 'strval', $identifiers ) ) : null;
         $report = array( 'added' => array(), 'updated' => array(), 'kept' => array(), 'conflict' => array() );
         if ( !xrowMetaDataLicensePicker::info( $license ) )
         {
@@ -1029,6 +1036,10 @@ class xrowMetaDataType extends eZDataType
         foreach ( eZContentClass::fetchList( eZContentClass::VERSION_STATUS_DEFINED, true ) as $class )
         {
             $identifier = $class->attribute( 'identifier' );
+            if ( $only !== null && !isset( $only[$identifier] ) )
+            {
+                continue;
+            }
             $classAttribute = $class->fetchAttributeByIdentifier( 'metadata' );
             if ( $classAttribute && $classAttribute->attribute( 'data_type_string' ) !== self::DATA_TYPE_STRING )
             {

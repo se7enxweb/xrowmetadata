@@ -154,6 +154,8 @@ gets it after its last attribute (category `meta`, named in the class's
 languages, an empty value in every existing object); a class that has it gets
 only what it lacks. It returns the class identifiers added, updated, kept and
 in conflict (a `metadata` attribute of another datatype, left alone).
+A second argument, a list of class identifiers, limits it to those classes:
+the kernel gives its help classes the attribute that way when it creates them.
 
 # Troubleshooting & support
 
