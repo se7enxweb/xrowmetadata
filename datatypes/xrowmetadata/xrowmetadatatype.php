@@ -1056,8 +1056,11 @@ class xrowMetaDataType extends eZDataType
                     $locales = array( $class->attribute( 'top_priority_language_locale' ) );
                 }
                 $always = $classNames->alwaysAvailableLanguageLocale();
+                // an empty list, not an unset one: setNameByLanguageLocale() drops every name on an unset list
                 $names = new eZSerializedObjectNameList();
+                $names->resetNameList();
                 $descriptions = new eZSerializedObjectNameList();
+                $descriptions->resetNameList();
                 foreach ( $locales as $locale )
                 {
                     $names->setNameByLanguageLocale( isset( self::$classAttributeNames[$locale] ) ? self::$classAttributeNames[$locale] : 'Meta Data', $locale );
@@ -1085,6 +1088,25 @@ class xrowMetaDataType extends eZDataType
                 $added = true;
             }
             $changed = false;
+            // a name list without any name (1.4.23 and 1.4.24 added the attribute without one): name it in the
+            // class's languages
+            $nameList = new eZSerializedObjectNameList( $classAttribute->attribute( 'serialized_name_list' ) );
+            $named = array_filter( (array)$nameList->cleanNameList(), function ( $name ) { return trim( (string)$name ) !== ''; } );
+            if ( !$added && !$named )
+            {
+                $classNames = new eZSerializedObjectNameList( $class->attribute( 'serialized_name_list' ) );
+                $locales = $classNames->languageLocaleList();
+                $locales = $locales ? $locales : array( $class->attribute( 'top_priority_language_locale' ) );
+                $nameList->resetNameList();
+                foreach ( $locales as $locale )
+                {
+                    $nameList->setNameByLanguageLocale( isset( self::$classAttributeNames[$locale] ) ? self::$classAttributeNames[$locale] : 'Meta Data', $locale );
+                }
+                $always = $classNames->alwaysAvailableLanguageLocale();
+                $nameList->setAlwaysAvailableLanguage( $always ? $always : $locales[0] );
+                $classAttribute->setAttribute( 'serialized_name_list', $nameList->serializeNames() );
+                $changed = true;
+            }
             if ( $classAttribute->attribute( 'category' ) !== 'meta' )
             {
                 $classAttribute->setAttribute( 'category', 'meta' );
