@@ -9,6 +9,12 @@ namespace
 if ( !function_exists( 'expModuleViewSitemapsIndexAddFiles' ) ) {
 function expModuleViewSitemapsIndexAddFiles( &$index, $dirname, $dirArray )
 {
+    // Every location already listed, shared across the directories of one index (PHP 8 refuses in_array() on null).
+    if ( !isset( $GLOBALS['loc'] ) || !is_array( $GLOBALS['loc'] ) )
+    {
+        $GLOBALS['loc'] = array();
+    }
+    $exists = false;
     try
     {
         $dir = new eZClusterDirectoryIterator( $dirname );
@@ -20,6 +26,7 @@ function expModuleViewSitemapsIndexAddFiles( &$index, $dirname, $dirArray )
             eZDebug::writeDebug( "Cannot add $dirname to the sitemaps index because it does not exist" );
             return;
         }
+        return;
     }
 
     foreach ( $dir as $file )
@@ -105,6 +112,7 @@ class Index extends \Exponential\Runnable\ModuleView
         }
 
         $index = new \xrowSitemapIndex();
+        $GLOBALS['loc'] = array();
 
         $dirArray = array(
             \eZSys::storageDirectory() . '/sitemap/' . \xrowSitemapTools::domain() ,
