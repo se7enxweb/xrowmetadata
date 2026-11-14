@@ -100,34 +100,14 @@ class xrowMetaDataOperator
      */
     protected function getReplaceValue($operatorValue,$replaceArray)
     {
-        $search_value = $operatorValue;
-        $placeholder_array = $this->getPlaceholders($search_value);
-        if(count($placeholder_array) !== 0)
+        // The known placeholders ([name], [count], [path], [parentname], [count:localbusiness], [pagecount]) are
+        // replaced; any other text in brackets ("kracker [dot] org") stays as the editor wrote it
+        $search_value = (string)$operatorValue;
+        foreach ( array_unique( $this->getPlaceholders( $search_value ) ) as $placeholder_value )
         {
-            foreach($placeholder_array as $placeholder_value)
+            if ( array_key_exists( $placeholder_value, $replaceArray ) )
             {
-                switch($placeholder_value)
-                {
-                    case "count":
-                        $meta_title = str_replace("[count]", $replaceArray['count'], $search_value);
-                        continue 2;
-                    case "name":
-                        $meta_title = str_replace("[name]", $replaceArray['name'], $search_value);
-                        continue 2;
-                    case "path":
-                        $meta_title = str_replace("[path]", $replaceArray['path'], $search_value);
-                        continue 2;
-                    case "parentname":
-                        $meta_title = str_replace("[parentname]", $replaceArray['parentname'], $search_value);
-                        continue 2;
-                    case "count:localbusiness":
-                        $meta_title = str_replace("[count:localbusiness]", $replaceArray['count:localbusiness'], $search_value);
-                        continue 2;
-                    case "pagecount":
-                        $meta_title = str_replace("[pagecount]", $replaceArray['pagecount'], $search_value);
-                        continue 2;
-                }
-                $search_value = $meta_title;
+                $search_value = str_replace( '[' . $placeholder_value . ']', (string)$replaceArray[$placeholder_value], $search_value );
             }
         }
         return $search_value;
